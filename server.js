@@ -726,7 +726,7 @@ const Rituals = {
     const count = Math.max(1, Math.min(9, Number(params.count) || 3));
     const wish = sanitizeWishText(params.wish) || 'ขอนอบน้อมกราบไหว้เจ้าพ่อเห้งเจีย ขอประทานพรให้โชคดีมีชัย ร่ำรวยรุ่งเรือง';
     const baseMerit = count * 5;
-    const expGain = count * 3;
+    const expGain = 0;
 
     state.totalIncense += count;
     state.activeIncenseSticks = Math.min(36, state.activeIncenseSticks + count);
@@ -770,7 +770,7 @@ const Rituals = {
     const avatar = params.avatar || '';
     const count = Math.max(1, Math.min(50, Number(params.count) || 1));
     const baseMerit = count * 2;
-    const expGain = count;
+    const expGain = 0;
 
     state.woodenFishHits += count;
     const { evolutionUp, faithGoalReached } = addEvolutionAndFaith(expGain, count);
@@ -805,7 +805,7 @@ const Rituals = {
     const count = Math.max(1, Math.min(9, Number(params.count) || 1));
     const wish = sanitizeWishText(params.wish) || 'ตีระฆังทองเบิกฟ้า ขอองค์ฉีเทียนต้าเซิ่งประทานสติปัญญาและโชคลาภ';
     const baseMerit = count * 12;
-    const expGain = count * 10;
+    const expGain = 0;
 
     state.bellRings += count;
     const { evolutionUp, faithGoalReached } = addEvolutionAndFaith(expGain, count * 5);
@@ -848,7 +848,7 @@ const Rituals = {
     const avatar = params.avatar || '';
     const wish = sanitizeWishText(params.wish) || 'ขอพรองค์เจ้าพ่อเห้งเจีย ประทานความสำเร็จ ร่ำรวยเงินทอง สุขภาพแข็งแรง';
     const baseMerit = 15;
-    const expGain = 10;
+    const expGain = 0;
 
     state.lanternCount += 1;
     const { evolutionUp, faithGoalReached } = addEvolutionAndFaith(expGain, 5);
@@ -964,7 +964,7 @@ const Rituals = {
     const topic = sanitizeWishText(params.topic) || 'โชคลาภ การงาน และความสำเร็จ';
     const fortune = FORTUNE_DECK[Math.floor(Math.random() * FORTUNE_DECK.length)];
     const baseMerit = 15;
-    const expGain = 10;
+    const expGain = 0;
 
     state.fortuneCount += 1;
     const { evolutionUp, faithGoalReached } = addEvolutionAndFaith(expGain, 5);
