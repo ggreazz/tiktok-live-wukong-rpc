@@ -21,9 +21,15 @@ class TempleAudioEngine {
     this.bgBaseVolume = Number.isFinite(savedMusicVol) ? Math.max(0, Math.min(1, savedMusicVol)) : 0.65;
     this.ttsVolume = Number.isFinite(savedTtsVol) ? Math.max(0, Math.min(1, savedTtsVol)) : 0.95;
 
-    this.useSynthMusicFallback = true;
+    this.useSynthMusicFallback = false;
     this.synthBgTimer = null;
-    this.bgAudio = null;
+    this.bgAudio = new Audio('/assets/audio/bg_wukong.mp3');
+    this.bgAudio.loop = true;
+    this.bgAudio.preload = 'auto';
+    this.bgAudio.volume = this.bgBaseVolume;
+    this.bgAudio.addEventListener('error', () => {
+      this.useSynthMusicFallback = true;
+    });
     this.ttsQueue = [];
     this.ttsPlaying = false;
     this.currentAudio = null;
