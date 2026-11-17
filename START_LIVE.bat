@@ -7,6 +7,14 @@ echo ============================================================
 echo 🐒 ศาลเจ้าพ่อเห้งเจีย (ซุนหงอคง) TIKTOK LIVE INTERACTIVE
 echo ============================================================
 
+where git >nul 2>nul
+if %errorlevel% equ 0 (
+  if exist ".git" (
+    echo 🔄 กำลังเช็คอัปเดตล่าสุดจาก GitHub...
+    git pull --rebase --autostash origin main
+  )
+)
+
 if not exist "node_modules" (
   echo 📦 กำลังติดตั้ง Node.js packages ครั้งแรก...
   call npm install
