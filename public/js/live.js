@@ -19,10 +19,20 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   function fitStage() {
     if (!stageWrapper || !stage9x16) return;
     const rect = stageWrapper.getBoundingClientRect();
-    const scale = rect.width / 1080;
+    const effectiveWidth =
+      rect.width > 10
+        ? rect.width
+        : rect.height > 10
+          ? (rect.height * 9) / 16
+          : (window.innerHeight * 0.96 * 9) / 16;
+    const scale = Math.max(0.15, effectiveWidth / 1080);
     stage9x16.style.transform = `scale(${scale})`;
   }
   window.addEventListener('resize', fitStage);
+  window.addEventListener('load', fitStage);
+  if (typeof ResizeObserver !== 'undefined' && stageWrapper) {
+    new ResizeObserver(fitStage).observe(stageWrapper);
+  }
   fitStage();
 
   // 2. เริ่มต้น Particle Engine (30 FPS) & Thai Audio Engine
@@ -342,10 +352,28 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       stage9x16.setAttribute('data-evo-level', String(lvl));
     }
 
-    document.querySelectorAll('.evo-stage-img').forEach((img) => {
-      const imgLvl = Number(img.getAttribute('data-level'));
-      img.classList.toggle('active', imgLvl === lvl);
-    });
+    const evoStageEl = document.getElementById('wukongEvolutionStage');
+    const bgUrl = `/assets/wukong/LV${lvl}.jpg`;
+    if (evoStageEl) {
+      evoStageEl.style.backgroundImage = `url('${bgUrl}')`;
+    }
+
+    const allImgs = Array.from(document.querySelectorAll('.evo-stage-img'));
+    const targetImg = allImgs.find((img) => Number(img.getAttribute('data-level')) === lvl);
+
+    const activateTarget = () => {
+      allImgs.forEach((img) => {
+        const imgLvl = Number(img.getAttribute('data-level'));
+        img.classList.toggle('active', imgLvl === lvl);
+      });
+    };
+
+    if (targetImg && (!targetImg.complete || targetImg.naturalWidth === 0)) {
+      targetImg.classList.add('active');
+      targetImg.addEventListener('load', activateTarget, { once: true });
+    } else {
+      activateTarget();
+    }
 
     if (triggerFlash || levelChanged) {
       const flash = document.getElementById('evolutionFlashOverlay');

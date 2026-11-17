@@ -2552,6 +2552,22 @@ html, body {
   font-family: 'Prompt', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+.stage-wrapper {
+  width: calc(96vh * 9 / 16);
+  flex-shrink: 0;
+  contain: none;
+}
+
+body.obs-mode .stage-wrapper {
+  width: calc(100vh * 9 / 16);
+}
+
+.stage-9x16 {
+  perspective: none;
+  contain: layout paint;
+  background: #1a0604 url('/assets/wukong/LV1.jpg') center center / cover no-repeat;
+}
+
 .wukong-evolution-stage {
   position: absolute;
   inset: 0;
@@ -2559,6 +2575,24 @@ html, body {
   height: 1920px;
   z-index: 1;
   pointer-events: none;
+  background-color: #1a0604;
+  background-image: url('/assets/wukong/LV1.jpg');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.stage-9x16[data-evo-level="1"] .wukong-evolution-stage {
+  background-image: url('/assets/wukong/LV1.jpg');
+}
+.stage-9x16[data-evo-level="2"] .wukong-evolution-stage {
+  background-image: url('/assets/wukong/LV2.jpg');
+}
+.stage-9x16[data-evo-level="3"] .wukong-evolution-stage {
+  background-image: url('/assets/wukong/LV3.jpg');
+}
+.stage-9x16[data-evo-level="4"] .wukong-evolution-stage {
+  background-image: url('/assets/wukong/LV4.jpg');
 }
 
 .evo-stage-img {
@@ -2569,14 +2603,14 @@ html, body {
   object-fit: cover;
   object-position: center center;
   opacity: 0;
-  transform: scale(1.015);
-  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  visibility: hidden;
+  transition: opacity 0.45s ease-out;
 }
 
 .evo-stage-img.active {
   opacity: 1;
-  transform: scale(1);
+  visibility: visible;
+  z-index: 2;
 }
 
 .evolution-flash-overlay {
