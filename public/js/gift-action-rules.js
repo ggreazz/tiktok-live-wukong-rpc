@@ -8,10 +8,10 @@ export function normalizeGiftName(event) {
 
 export function resolveGiftAction(event) {
   const name = normalizeGiftName(event);
-  if (/\b(rocket|ten lua)\b/.test(name) || /(จรวด|กระบองทอง|ร่วมบุญใหญ่)/.test(name)) return 'rocket';
-  if (/\b(dragon|rong)\b/.test(name) || /(มังกร|มหาบุญ)/.test(name)) return 'dragon';
-  if (/\b(donut|doughnut)\b/.test(name) || /(โดนัท|ทองคำแท่ง|ลูกท้อ)/.test(name)) return 'donut';
-  if (/\b(rose|hoa hong)\b/.test(name) || /(กุหลาบ|ดอกบัว|เทียน|มินิฮาร์ท)/.test(name)) return 'rose';
+  if (/\b(rocket|ten lua|confetti|hand heart|bouquet|mishka bear|balloon gift box)\b/.test(name) || /(จรวด|กระบองทอง|ร่วมบุญใหญ่)/.test(name)) return 'rocket';
+  if (/\b(dragon|rong|money gun|whale|lion|universe|swan)\b/.test(name) || /(มังกร|มหาบุญ|มหาสักการะ)/.test(name)) return 'dragon';
+  if (/\b(donut|doughnut|perfume|bubble tea|little crown|paper crane|warm cocoa)\b/.test(name) || /(โดนัท|ทองคำแท่ง|ลูกท้อ|น้ำหอม|เซียมซีส่วนตัว)/.test(name)) return 'donut';
+  if (/\b(rose|hoa hong|finger heart|heart me|ice cream cone|tiktok|gg|rosa|applause)\b/.test(name) || /(กุหลาบ|ดอกบัว|เทียน|มินิฮาร์ท)/.test(name)) return 'rose';
   return null;
 }
 
