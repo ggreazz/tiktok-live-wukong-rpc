@@ -273,12 +273,12 @@ import { GiftEffectRegistry } from './gift-effect-registry.js';
     central.classList.remove('walking-up');
     const label = document.getElementById('centralAction');
     if (label) label.textContent = action === 'rocket'
-      ? '🚀 Bị tên lửa đánh bật khỏi lư hương!'
+      ? '🚀 พลังกระบองทองพุ่งทะยานเบิกฟ้า!'
       : action === 'dragon'
-        ? '🐉 Long khí cuộn tới, thí chủ bị đẩy lùi!'
+        ? '🐉 มังกรทองสวรรค์ประทานพรใหญ่!'
         : action === 'rose'
-        ? '🌹 Hương hoa hồng bay quanh thí chủ!'
-        : '🍩 Bị chiếc bánh donut dụ chạy khỏi lư hương!';
+        ? '🌹 กลีบดอกไม้ทิพย์โปรยปรายบูชาองค์เทพ!'
+        : '🍩 ถวายลูกท้อสวรรค์และทองคำแท่งมงคล!';
   }
 
   function startCharacterTimer(event) {

@@ -5,12 +5,21 @@ describe('gift action name resolver', () => {
   it.each([
     ['Rocket', 'rocket'],
     ['Tên Lửa', 'rocket'],
+    ['จรวด', 'rocket'],
+    ['กระบองทอง', 'rocket'],
+    ['ร่วมบุญใหญ่', 'rocket'],
     ['Dragon', 'dragon'],
     ['Rồng', 'dragon'],
+    ['มังกร', 'dragon'],
+    ['มหาบุญ', 'dragon'],
     ['Donut', 'donut'],
     ['Doughnut', 'donut'],
+    ['ทองคำแท่ง', 'donut'],
+    ['ลูกท้อ', 'donut'],
     ['Rose', 'rose'],
-    ['Hoa Hồng', 'rose']
+    ['Hoa Hồng', 'rose'],
+    ['ดอกบัว', 'rose'],
+    ['เทียน', 'rose']
   ])('maps the observed display-name alias %s to %s', (giftName, expected) => {
     expect(resolveGiftAction({ giftName })).toBe(expected);
   });

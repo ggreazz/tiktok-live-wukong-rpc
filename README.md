@@ -1,171 +1,60 @@
-# 🪷 Chùa Linh Ứng Online — TikTok Live RPC (9:16 Interactive Buddhist Sanctuary)
+# 🐒 ศาลเจ้าพ่อเห้งเจีย 齐天大圣 (孙悟空 Sūn Wù Kōng) — TikTok Live Interactive RPC
 
-Hệ thống phát trực tiếp tương tác (**Interactive TikTok Live Stream & JSON-RPC 2.0**) chuẩn khung dọc **9:16 (`1080×1920`)** dành cho **OBS Studio / TikTok Live Studio**, chạy siêu nhẹ trên **Bun.js** và tích hợp giọng đọc AI tiếng Việt **ZeroTTS (`zeroweight-ai/ZeroTTS`)**.
-
-Người xem trên TikTok Live tương tác trực tiếp qua **Bình luận (Comment)**, **Thả tim (Like)**, **Chia sẻ / Follow** và **Tặng quà (Gift)** để thực hiện các nghi thức tâm linh trên màn hình Chánh Điện **Đức Phật A Di Đà**:
-- 🔥 **Thắp hương & Đảnh lễ Tam Bái (8-Frame Walking & Prostration)**: Nhân vật Phật tử mặc áo lam bước đi từng bước dọc thảm đỏ hoa sen lên trước Lư Hương Đỉnh Đồng, hạ gối quỳ và thực hiện 3 lạy Ngũ thể đầu địa hướng về Đức Phật A Di Đà.
-- 🏮 **Thả Đèn Hoa Đăng / Sớ Cầu Nguyện**: Bình luận lời khấn sẽ bay lên thành Đèn Hoa Đăng kèm giọng đọc AI đọc lời cầu nguyện.
-- 🎋 **Xin Xăm / Gieo Quẻ Đầu Năm (Đồng bộ Giọng đọc & Tờ Giải Quẻ)**: Tự động lắc ống xăm và mở tờ Giải Quẻ (Thượng Thượng Cát, Đại Cát, Thượng Cát...) đúng thời điểm giọng đọc bắt đầu vang lên.
-- 🪵 **Gõ Mõ & 🔔 Thỉnh Đại Hồng Chung**: Thả tim gõ mõ tích điểm Công Đức, chia sẻ/follow thỉnh chuông đồng lan tỏa sóng âm vàng và kích hoạt làn sóng vái lạy của 40+ Phật tử trong Đạo Tràng.
-- 📜 **Bảng Vàng Công Đức (`TẤM LÒNG THÀNH` & 6 Đệm Quỳ VIP)**: Vinh danh trực tiếp người xem thật có điểm Công Đức cao nhất trên 6 đệm quỳ gấm đỏ trước bàn thờ Phật.
+ระบบ **TikTok Live Interactive** สำหรับงานไลฟ์สดสายมู-สักการะ **เจ้าพ่อเห้งเจีย / ซุนหงอคง (孙悟空 Sūn Wù Kōng)** เพื่อสร้างรายได้จากการส่งของขวัญ (TikTok Gifts) พัฒนาต่อยอดจากสถาปัตยกรรม [`tiktok-live-temple-rpc`](https://github.com/zane-tv/tiktok-live-temple-rpc.git) พร้อมระบบ **Evolution องค์ประธาน 4 ระดับ**, **ระบบคำนวณมูลค่าของขวัญ 4 ระดับ (Donate Multiplier Economy)** และ **โมเดลเสียงพูดภาษาไทย (Thai TTS)**
 
 ---
 
-## 📸 Hình Ảnh Demo Giao Diện
+## ✨ 1. ระบบวิวัฒนาการองค์ประธาน 4 ระดับ (4-Stage Deity Evolution)
 
-### 1. Màn hình Chánh Điện 9:16 & Bảng Điều Khiển Nhanh (`http://localhost:3000`)
-![Màn hình Chánh Điện và Điều Khiển Nhanh](docs/demo/demo-main-stage.png)
+ภาพองค์ประธานในโปรเจกต์ (`public/assets/wukong/LV1.jpg` – `LV4.jpg`) จะเปลี่ยนร่างและปลดล็อกออร่าศักดิ์สิทธิ์อัตโนมัติตามแต้มบารมี (**Evolution EXP**) ที่สะสมจากการส่งของขวัญของผู้ชมในไลฟ์:
 
-### 2. Chế độ OBS Browser Source 9:16 Sạch (`http://localhost:3000/?obs=1`) & Gieo Quẻ Linh Xăm
-| Màn hình OBS 9:16 (`?obs=1`) | Tờ Giải Quẻ Linh Xăm (Đồng bộ Giọng Đọc) |
-| :---: | :---: |
-| ![OBS 9:16 Mode](docs/demo/demo-obs-9x16.png) | ![Fortune Oracle Modal](docs/demo/demo-fortune-oracle.png) |
-
-### 3. Bảng Điều Khiển JSON-RPC 2.0 & Admin (`http://localhost:3000/admin`)
-![Admin JSON-RPC Panel](docs/demo/demo-admin-panel.png)
+| ระดับ | ชื่อปาง (ไทย / จีน) | ภาพประกอบ | แต้ม Evolution EXP | โบนัสแต้มบุญ (Merit Multiplier) | ลักษณะเด่น |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **LV.1** | **ปางที่ 1: มุ้ยเกาอ๋อง พญาวานรเขาฮัวกั่วซาน**<br>`美猴王 • 水簾洞` | `public/assets/wukong/LV1.jpg` | `0 – 999 EXP` | **×1.0** | พญาวานรแห่งถ้ำม่านน้ำตก ถือลูกท้อสวรรค์อายุวัฒนะ ประทานพรสุขภาพและโชคลาภเริ่มต้น |
+| **LV.2** | **ปางที่ 2: พญาวานรเหินเมฆา กระบองวิเศษ**<br>`美猴王 • 如意金箍棒` | `public/assets/wukong/LV2.jpg` | `1,000 – 4,999 EXP` | **×1.25** | ทรงเครื่องนักรบเหินเมฆาทองคำ ถือกระบองวิเศษหรูอี้จินกูปัง ฟาดฟันอุปสรรค เปิดทางทรัพย์ |
+| **LV.3** | **ปางที่ 3: ฉีเทียนต้าเซิ่ง มหาเทพผู้เสมอฟ้า**<br>`齐天大圣` | `public/assets/wukong/LV3.jpg` | `5,000 – 14,999 EXP` | **×1.5** | ทรงเกราะทองคำเต็มยศ ผ้าคลุมแดง ขนไก่ฟ้าคู่ ดวงตาอัคคีทองคำ อำนาจวาสนาและชัยชนะสูงสุด |
+| **LV.4** | **ปางที่ 4: โต้วจั้นเซิ่งฝอ พุทธะผู้พิชิตมาร**<br>`斗战胜佛 • 大圣佛祖` | `public/assets/wukong/LV4.jpg` | `15,000+ EXP` | **×2.0** | สำเร็จมรรคผลเป็นพระพุทธเจ้าผู้พิชิตมาร ประทับบัลลังก์บัวทองคำ รัศมีธรรมจักรทองคำสูงสุด |
 
 ---
 
-## ⚡ Kiến Trúc & Tối Ưu Hóa Hiệu Suất (Siêu Nhẹ CPU/GPU)
+## 💎 2. การศึกษามูลค่าของขวัญ TikTok กับแต้มการอัพระดับ 4 ระดับ (4-Tier Gift Economy)
 
-- **Runtime**: Chạy trực tiếp trên **Bun.js** (`~0.1% CPU` khi chờ).
-- **Canvas Particle Engine (`public/js/particles.js`)**:
-  - Khóa tốc độ vẽ ở **30 FPS** ổn định, tự động tạm dừng khi ẩn tab (`document.hidden`).
-  - Pre-render toàn bộ Khói hương, Hạt vàng và Cánh hoa sen ra Offscreen Canvas 1 lần duy nhất lúc khởi tạo (`drawImage`), không gọi `createRadialGradient` hay `shadowBlur` trong vòng lặp frame.
-- **Zero-Flicker 8-Frame Sprite Stack (`public/js/live.js` & `public/css/live.css`)**:
-  - Nạp sẵn cả 8 khung hình chuyển động (`walk1`, `walk2`, `kneelDown`, `kneel`, `forehead`, `bowMid`, `prostrate`, `prostrateDeep`) vào GPU với bóng đổ (drop-shadow) đã bake sẵn trong PNG, loại bỏ hoàn toàn hiện tượng nháy/mất hình khi chuyển tư thế.
-- **ZeroTTS Worker (`tts_worker.py`)**:
-  - Tiến trình Python thường trú nạp sẵn model `zeroweight-ai/ZeroTTS` (`intra_op_num_threads=3`, `OMP_WAIT_POLICY=PASSIVE` → **`0.0% CPU` khi chờ**).
-  - Tổng hợp nguyên câu trong 1 lần gọi (`single-pass synthesis`), khử DC offset, chuẩn hóa đỉnh âm lượng (`peak <= 0.90`) và làm mượt 2 đầu sóng âm (`cosine fade-in/out`) chống xước/rè tiếng.
-- **Bộ Lọc Chặn Ký Tự Lạ & Spam (`server.js` & `tts_worker.py`)**:
-  - Chặn tự động các ký tự Cuneiform (`𒐫`), chữ Ả Rập gây lag, Braille, Zalgo, bình luận chỉ toàn dấu chấm (`...`) hoặc từ ngữ phản cảm.
-  - Tự động chuẩn hóa Unicode (`NFKC` → `NFC`) chuyển tên kiểu chữ toán học về tiếng Việt sạch trước khi đọc TTS.
+เพื่อให้ผู้ชมรู้สึกว่า **"ยิ่งส่งของขวัญมูลค่าสูง องค์เทพยิ่งอัพระดับไวแบบก้าวกระโดด"** ระบบจึงใช้สูตร **Non-Linear Exponential Acceleration (`GIFT_DONATE_TIERS`)** แทนการคูณแบบเส้นตรงทั่วไป:
+
+$$\text{Evolution EXP} = (\text{Coins} \times \text{EXPPerCoin}) + \text{FlatTierBonus}$$
+
+| ระดับ Donate | ช่วงมูลค่า (TikTok Coins) | ของขวัญในหน้าจอไลฟ์ | อัตราเร่ง EXP (`expPerCoin`) | โบนัสพิเศษ (`flatBonusExp`) | ความไวเทียบ Tier 1 | แต้ม EXP ที่ได้รับจริง & ผลลัพธ์ต่อการอัพระดับ |
+| :---: | :---: | :--- | :---: | :---: | :---: | :--- |
+| **Tier 1**<br>ศรัทธาเริ่มต้น | `1 – 9 Coins` | 🪷 **ดอกบัว** (`1 Coin`)<br>🕯️ **รูปเทียน** (`5 Coins`) | `15 EXP / Coin` | `+0 EXP` | **1.0x** (พื้นฐาน) | • ดอกบัว (1 Coin) = **`+15 EXP`** (ต้องใช้ 67 ดอกเพื่อขึ้น LV.2)<br>• รูปเทียน (5 Coins) = **`+75 EXP`** + จุดธูป 3 ดอก |
+| **Tier 2**<br>ถวายเครื่องทรง | `10 – 99 Coins` | 🎋 **เซียมซีส่วนตัว** (`20 Coins`)<br>🍑 **ทองคำแท่ง/ลูกท้อ** (`30 Coins`) | `25 EXP / Coin` | `+100 EXP` | **1.8x – 2.2x** | • เซียมซีส่วนตัว (20 Coins) = **`+600 EXP`** + อ่านคำทำนายออกเสียง<br>• ทองคำแท่ง (30 Coins) = **`+850 EXP`** (**ส่งเพียง 2 ชิ้น อัพระดับจาก LV.1 → LV.2 ทันที!**) |
+| **Tier 3**<br>มหาบารมีฉีเทียน | `100 – 499 Coins` | ⚡ **ร่วมบุญใหญ่ / กระบองทอง** (`100 Coins`) | `45 EXP / Coin` | `+500 EXP` | **3.3x** | • ร่วมบุญใหญ่ (100 Coins) = **`+5,000 EXP`** (**ส่งเพียง 1 ชิ้น พุ่งข้ามขั้นขึ้นเป็น LV.3 ฉีเทียนต้าเซิ่ง ทันที!**) |
+| **Tier 4**<br>พุทธะผู้พิชิตมาร | `500+ Coins` | 🐉 **มหาบุญมังกรทอง** (`500 Coins`) | `60 EXP / Coin` | `+2,500 EXP` | **4.5x** | • มหาบุญ (500 Coins) = **`+32,500 EXP`** (**ปลดล็อกร่างสูงสุด LV.4 โต้วจั้นเซิ่งฝอ ทันทีในครั้งเดียว** + พิธีฉลองทั้งไลฟ์!) |
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Chạy Nhanh
+## 🎙️ 3. โมเดลการพูดภาษาไทย (Thai TTS Engine — `tts_worker.py`)
 
-### 1. Yêu cầu hệ thống
-- [Bun.js](https://bun.sh/) (`>= 1.1`)
-- Python `3.10+` & [`uv`](https://github.com/astral-sh/uv) (để tạo môi trường `.venv` chạy `zerotts`)
-
-### 2. Cài đặt thư viện
-```bash
-# Cài đặt dependencies cho Bun / Node
-bun install
-
-# Tạo môi trường Python .venv và cài đặt ZeroTTS
-uv venv .venv
-uv pip install --python .venv/bin/python zerotts pillow
-```
-
-### 3. Khởi chạy Server
-```bash
-bun start
-# Hoặc chế độ tự động reload khi sửa code:
-bun run dev
-```
-
-Mặc định server chạy tại cổng `3000`:
-- **Màn hình Live + Điều khiển nhanh**: [http://localhost:3000](http://localhost:3000)
-- **Màn hình OBS Browser Source (Sạch 9:16)**: [http://localhost:3000/?obs=1](http://localhost:3000/?obs=1) *(Đặt kích thước Browser Source trong OBS là `1080 × 1920`)*
-- **Bảng điều khiển Admin & RPC**: [http://localhost:3000/admin](http://localhost:3000/admin)
+ระบบเสียงอ่านคำอธิษฐาน ขอบคุณของขวัญ คำทำนายเซียมซี และประกาศเลื่อนระดับ Evolution ทำงานผ่าน Persistent Python Worker (`tts_worker.py`) รองรับ 2 โมเดลเสียงภาษาไทย:
+1. **`thai_female` (ค่าเริ่มต้น)**: เสียงพากย์หญิงภาษาไทยชัดเจนธรรมชาติ (`gTTS` `lang="th"` พร้อมระบบปรับแต่งคลื่นเสียง `24kHz` + High-pass filter + Soft-knee limiter และแคชไฟล์ WAV อัตโนมัติใน `data/tts-cache/`)
+2. **`thai_vits` (Offline Local Model)**: โมเดล Neural TTS ภาษาไทย `csukuangfj/vits-mms-tha` รันแบบออฟไลน์ 100% ผ่าน `sherpa-onnx` (`models/vits-mms-tha/model.onnx`) พร้อมตัวแปลงตัวเลขไทย/อารบิกเป็นคำอ่านภาษาไทยอัตโนมัติ
+3. **Web Speech API (`th-TH`) Fallback**: กรณีเบราว์เซอร์ต้องการอ่านสำรองทันที
 
 ---
 
-## 🎮 Bảng Quy Tắc Tương Tác TikTok Live
-
-| Sự kiện TikTok Live | Điều kiện / Từ khóa | Nghi thức trên Chánh Điện | Điểm Công Đức |
-| :--- | :--- | :--- | :---: |
-| **Thả tim (Like)** | Mỗi đợt thả tim | Gõ mõ gỗ tụng kinh + Làn sóng Phật tử vái lạy | `+1` / tim |
-| **Follow / Share** | Theo dõi hoặc chia sẻ | Thỉnh Đại Hồng Chung ngân vang + Sóng âm vàng | `+10` |
-| **Bình luận Thắp hương** | `thắp hương`, `dâng hương`, `bái phật`, `lạy phật` | Phật tử bước dọc thảm đỏ lên trước Lư Hương, quỳ đảnh lễ 3 lạy + Đọc tên khấn | `+15` |
-| **Bình luận Cầu nguyện** | `cầu ...`, `nguyện ...`, `nam mô`, `a di đà phật`, `bình an`, `chúc ...` | Bước lên đảnh lễ + Thả Đèn Hoa Đăng mang lời khấn bay lên trời + Đọc lời cầu nguyện | `+10` |
-| **Bình luận Xin xăm** | `xin xăm`, `gieo quẻ`, `rút quẻ`, `quẻ` | Lắc ống xăm + Mở tờ Giải Quẻ đồng bộ đúng lúc giọng đọc bắt đầu vang lên | `+10` |
-| **Tặng quà Nhỏ (1–4 xu)** | Hoa hồng (Rose), Heart Me... | Bước lên dâng Đài Hoa Sen Vàng + Thắp 3 nén hương + Đọc lời cảm tạ | `+20` / xu |
-| **Tặng quà Vừa (5–99 xu)** | Đèn lưu ly, Mâm ngũ quả... | Dâng Đèn Lưu Ly / Mâm Ngũ Quả + Thỉnh Chuông + Đọc lời chúc phúc | `+30` / xu |
-| **Tặng quà Lớn (≥ 100 xu)** | Quà ≥ 100 xu | **Đại Lễ Kim Long Chầu Phật**: Mưa hoa sen vàng, Hào quang vạn trượng, Chuông đồng ngân vang | `+50` / xu |
-
----
-
-## 🔌 Giao Thức JSON-RPC 2.0 (`POST /rpc` & `ws://localhost:3000/ws`)
-
-Bạn có thể gọi trực tiếp từ **TikFinity**, **Streamer.bot**, webhook hoặc `curl`:
+## 🚀 4. การรันระบบและใช้งาน
 
 ```bash
-# 1. Thắp hương cầu an
-curl -X POST http://localhost:3000/rpc \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "temple.burnIncense",
-    "params": {
-      "user": "Thí Chủ Minh Tâm",
-      "count": 3,
-      "wish": "Cầu gia đình bình an, vạn sự cát tường như ý"
-    }
-  }'
+# รันเซิร์ฟเวอร์หลัก (พอร์ต 3000)
+./node_modules/.bin/bun run server.js
+# หรือ
+node server.js
 
-# 2. Xin xăm / Gieo quẻ đầu năm
-curl -X POST http://localhost:3000/rpc \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 2,
-    "method": "temple.drawFortune",
-    "params": {
-      "user": "Thí Chủ Minh Tâm",
-      "topic": "Cầu tài lộc và gia đạo bình an"
-    }
-  }'
-
-# 3. Kết nối tới phòng TikTok Live (@username hoặc link vt.tiktok.com)
-curl -X POST http://localhost:3000/rpc \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 3,
-    "method": "live.connect",
-    "params": {
-      "username": "@zenfacts_vn"
-    }
-  }'
+# รันชุดทดสอบ Unit Tests ทั้งหมด
+./node_modules/.bin/bun test
 ```
 
-### Danh sách JSON-RPC Methods hỗ trợ:
-- `temple.getState`: Lấy toàn bộ trạng thái Chánh Điện và Bảng Vàng Công Đức.
-- `temple.burnIncense`: Thắp nhang & bước lên đảnh lễ (`user`, `avatar`, `count`, `wish`).
-- `temple.sendPrayer`: Thả đèn hoa đăng cầu nguyện (`user`, `avatar`, `wish`).
-- `temple.drawFortune`: Lắc ống xăm & gieo quẻ (`user`, `avatar`, `topic`).
-- `temple.strikeWoodenFish`: Gõ mõ tích công đức (`user`, `count`).
-- `temple.ringBell`: Thỉnh Đại Hồng Chung (`user`, `count`, `wish`).
-- `temple.offerGift`: Dâng lễ vật (`user`, `giftType`: `lotus` | `fruit` | `lamp` | `dragon`, `coins`, `giftName`).
-- `temple.grandCeremony`: Kích hoạt Đại Lễ Kim Long Chầu Phật (`user`, `coins`, `giftName`).
-- `temple.updateSettings`: Cập nhật âm lượng nhạc nền (`musicVolume`), giọng đọc (`ttsVolume`), bật/tắt TTS.
-- `temple.resetMerit`: Đặt lại bảng thống kê Công Đức.
-- `live.connect` / `live.disconnect`: Kết nối / Ngắt kết nối phòng TikTok Live.
-
----
-
-## 📁 Cấu Trúc Thư Mục
-
-```text
-├── server.js                  # Bun.js HTTP + WebSocket JSON-RPC 2.0 Server & TikTok Live Connector
-├── tts_worker.py              # Tiến trình Python ZeroTTS thường trú (48kHz, chống rè/clipping, lọc ký tự lạ)
-├── data/
-│   ├── merit-state.json       # Lưu trữ bền vững Bảng Vàng Công Đức của người xem thật
-│   └── tts-cache/             # Bộ đệm file âm thanh WAV đã tổng hợp
-├── public/
-│   ├── index.html             # Giao diện Chánh Điện 9:16 + Bảng điều khiển nhanh
-│   ├── admin.html             # Trang quản trị JSON-RPC 2.0 đầy đủ
-│   ├── css/live.css           # Stylesheet tối ưu GPU Compositor
-│   ├── js/
-│   │   ├── live.js            # Điều phối 8-frame prostration, Đạo Tràng 40 chỗ ngồi & WebSocket RPC
-│   │   ├── particles.js       # 30 FPS Offscreen-Sprite Particle Engine (Khói hương, Hoa sen, Sóng âm)
-│   │   └── audio.js           # Quản lý nhạc nền auto-ducking, Pháp khí Web Audio & hàng đợi đồng bộ TTS
-│   └── assets/                # Hình nền Đức Phật A Di Đà, 8 frame Phật tử áo lam & nhạc nền
-└── docs/
-    ├── demo/                  # Hình ảnh chụp màn hình demo thực tế
-    └── superpowers/specs/     # Tài liệu thiết kế kỹ thuật (Design Spec)
-```
+### หน้าจอการใช้งาน
+- **หน้าจอไลฟ์หลัก (9:16 Interactive Shrine UI)**: `http://localhost:3000/`
+- **หน้าจอสำหรับ OBS Browser Source (ซ่อนปุ่มควบคุมล่างอัตโนมัติ)**: `http://localhost:3000/?obs=1`
+- **แผงควบคุมผู้ดูแลระบบ (Admin & Evolution Tester)**: `http://localhost:3000/admin`
+- **JSON-RPC 2.0 Endpoint**: `POST http://localhost:3000/rpc`

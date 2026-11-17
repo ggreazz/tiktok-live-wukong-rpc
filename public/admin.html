@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bảng Điều Khiển JSON-RPC 2.0 — Chùa Linh Ứng TikTok Live</title>
+  <title>แผงควบคุม JSON-RPC 2.0 — ศาลเจ้าพ่อเห้งเจีย 齐天大圣 TikTok Live</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&family=Noto+Serif:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&family=Noto+Serif+Thai:wght@700;900&family=Prompt:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #120504;
@@ -21,12 +21,12 @@
     body {
       background: radial-gradient(circle at 50% 0%, #330c08 0%, #100302 80%);
       color: var(--text);
-      font-family: 'Be Vietnam Pro', sans-serif;
+      font-family: 'Prompt', 'Noto Sans Thai', sans-serif;
       min-height: 100vh;
       padding: 28px;
     }
     .container {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -40,10 +40,12 @@
       border: 1.5px solid var(--border);
       border-radius: 18px;
       padding: 18px 24px;
+      flex-wrap: wrap;
+      gap: 14px;
     }
     .top-title {
-      font-family: 'Noto Serif', serif;
-      font-size: 26px;
+      font-family: 'Noto Serif Thai', serif;
+      font-size: 24px;
       color: var(--gold-light);
     }
     .top-sub {
@@ -63,12 +65,18 @@
       padding: 10px 16px;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13.5px;
+      font-family: inherit;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .btn:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
     }
     .btn.gold {
       background: linear-gradient(180deg, #f4c150 0%, #c48312 100%);
@@ -79,6 +87,9 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
+    }
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: 1fr; }
     }
     .card {
       background: var(--card);
@@ -114,6 +125,52 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
+    .evo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .evo-card {
+      background: #140403;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    .evo-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(244, 193, 80, 0.4);
+    }
+    .evo-card .lvl {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+    .evo-card .exp {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    table.tier-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    table.tier-table th, table.tier-table td {
+      border: 1px solid rgba(244, 193, 80, 0.22);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    table.tier-table th {
+      background: rgba(244, 193, 80, 0.14);
+      color: var(--gold-light);
+    }
     pre {
       background: #0b0202;
       border: 1px solid rgba(244, 193, 80, 0.25);
@@ -130,69 +187,137 @@
   <div class="container">
     <header class="top-bar">
       <div>
-        <div class="top-title">🪷 BẢNG ĐIỀU KHIỂN CHÙA ONLINE TIKTOK LIVE RPC (BUN.JS + ZEROTTS MAI CHI)</div>
-        <div class="top-sub" id="statusBanner">Đang tải trạng thái hệ thống...</div>
+        <div class="top-title">🐒 แผงควบคุมศาลเจ้าพ่อเห้งเจีย 齐天大圣 (孙悟空 Sūn Wù Kōng) — TikTok Live RPC</div>
+        <div class="top-sub" id="statusBanner">กำลังโหลดสถานะระบบ...</div>
       </div>
       <div class="top-links">
-        <a class="btn" href="/?obs=1" target="_blank">📺 Mở Màn Hình OBS 9:16 Sạch (?obs=1)</a>
-        <a class="btn gold" href="/" target="_blank">🪷 Mở Màn Hình Live Chính</a>
+        <a class="btn" href="/?obs=1" target="_blank">📺 เปิดหน้าจอ OBS 9:16 คลีน (?obs=1)</a>
+        <a class="btn gold" href="/" target="_blank">🏯 เปิดหน้าจอ Live หลัก</a>
       </div>
     </header>
 
     <div class="grid">
       <section class="card">
-        <h2>📡 1. Kết Nối Phòng TikTok Live & Giọng Đọc ZeroTTS (Mai Chi)</h2>
+        <h2>✨ 1. ระบบ Evolution 4 ระดับ ขององค์ประธาน (เจ้าพ่อเห้งเจีย)</h2>
+        <div class="evo-grid">
+          <div class="evo-card">
+            <img src="/assets/wukong/LV1.jpg" alt="LV.1" />
+            <div class="lvl">LV.1 มุ้ยเกาอ๋อง</div>
+            <div class="exp">0 – 999 EXP (×1.0)</div>
+            <button class="btn" onclick="sendRpc('temple.setEvolutionLevel', { level: 1 })">ตั้งเป็น LV.1</button>
+          </div>
+          <div class="evo-card">
+            <img src="/assets/wukong/LV2.jpg" alt="LV.2" />
+            <div class="lvl">LV.2 พญาวานรเหินเมฆา</div>
+            <div class="exp">1,000+ EXP (×1.25)</div>
+            <button class="btn" onclick="sendRpc('temple.setEvolutionLevel', { level: 2 })">ตั้งเป็น LV.2</button>
+          </div>
+          <div class="evo-card">
+            <img src="/assets/wukong/LV3.jpg" alt="LV.3" />
+            <div class="lvl">LV.3 ฉีเทียนต้าเซิ่ง</div>
+            <div class="exp">5,000+ EXP (×1.5)</div>
+            <button class="btn" onclick="sendRpc('temple.setEvolutionLevel', { level: 3 })">ตั้งเป็น LV.3</button>
+          </div>
+          <div class="evo-card">
+            <img src="/assets/wukong/LV4.jpg" alt="LV.4" />
+            <div class="lvl">LV.4 โต้วจั้นเซิ่งฝอ</div>
+            <div class="exp">15,000+ EXP (×2.0)</div>
+            <button class="btn gold" onclick="sendRpc('temple.setEvolutionLevel', { level: 4 })">ตั้งเป็น LV.4</button>
+          </div>
+        </div>
+        <table class="tier-table">
+          <thead>
+            <tr>
+              <th>ระดับของขวัญ (Donate Tier)</th>
+              <th>มูลค่าเหรียญ</th>
+              <th>ตัวคูณแต้ม EXP</th>
+              <th>ความไวในการอัพระดับ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tier 1: ศรัทธาเริ่มต้น (ดอกบัว/รูปเทียน)</td>
+              <td>1 – 9 Coins</td>
+              <td>15 EXP/Coin</td>
+              <td>1.0x (พื้นฐาน)</td>
+            </tr>
+            <tr>
+              <td>Tier 2: ถวายเครื่องทรง (เซียมซี/ทองคำแท่ง)</td>
+              <td>10 – 99 Coins</td>
+              <td>25 EXP/Coin + 100 Bonus</td>
+              <td>1.8x (2 ชิ้นขึ้น LV.2 ทันที)</td>
+            </tr>
+            <tr>
+              <td>Tier 3: มหาบารมีฉีเทียน (ร่วมบุญใหญ่/กระบองทอง)</td>
+              <td>100 – 499 Coins</td>
+              <td>45 EXP/Coin + 500 Bonus</td>
+              <td>3.3x (1 ชิ้นข้ามขึ้น LV.3 ทันที)</td>
+            </tr>
+            <tr>
+              <td>Tier 4: พุทธะผู้พิชิตมาร (มหาบุญมังกรทอง)</td>
+              <td>500+ Coins</td>
+              <td>60 EXP/Coin + 2,500 Bonus</td>
+              <td>4.5x (ปลดล็อก LV.4 ทันที)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>🙏 2. ทดสอบส่งของขวัญ 4 ระดับ & พิธีกรรม JSON-RPC 2.0</h2>
         <div class="row">
-          <input type="text" id="ttUser" placeholder="Nhập @username TikTok đang phát Live..." />
-          <button class="btn gold" id="btnConn">Kết Nối Live</button>
-          <button class="btn" id="btnDisc">Ngắt</button>
+          <input type="text" id="rpcUser" value="สายบุญบารมีเห้งเจีย" placeholder="ชื่อผู้ศรัทธา..." />
+          <input type="text" id="rpcWish" value="ขอพรการงานรุ่งเรือง โชคลาภมั่งคั่ง ชนะทุกอุปสรรค" placeholder="คำอธิษฐาน..." />
+        </div>
+        <div class="action-grid">
+          <button class="btn" onclick="sendRpc('temple.offerGift', { giftType: 'lotus', coins: 1, giftName: 'ดอกบัวถวายองค์เห้งเจีย' })">🪷 Tier 1: ดอกบัว (1 Coin → +15 EXP)</button>
+          <button class="btn" onclick="sendRpc('temple.offerGift', { giftType: 'candle', coins: 5, giftName: 'รูปเทียนมงคล' })">🕯️ Tier 1: รูปเทียน (5 Coins → +75 EXP)</button>
+          <button class="btn" onclick="sendRpc('temple.offerGift', { giftType: 'fortune', coins: 20, giftName: 'เซียมซีส่วนตัว' })">🎋 Tier 2: เซียมซีส่วนตัว (20 Coins → +600 EXP)</button>
+          <button class="btn gold" onclick="sendRpc('temple.offerGift', { giftType: 'gold', coins: 30, giftName: 'ทองคำแท่ง & ลูกท้อสวรรค์' })">🍑 Tier 2: ทองคำแท่ง (30 Coins → +850 EXP)</button>
+          <button class="btn gold" onclick="sendRpc('temple.offerGift', { giftType: 'staff', coins: 100, giftName: 'ร่วมบุญใหญ่ กระบองทองคำ' })">⚡ Tier 3: ร่วมบุญใหญ่ (100 Coins → +5,000 EXP)</button>
+          <button class="btn gold" onclick="sendRpc('temple.grandCeremony', { coins: 500, giftName: 'มหาบุญมังกรทอง โต้วจั้นเซิ่งฝอ' })">🐉 Tier 4: มหาบุญ 500 Coins (+32,500 EXP)</button>
+          <button class="btn" onclick="sendRpc('temple.burnIncense', { count: 3 })">🔥 จุดธูป 3 ดอก</button>
+          <button class="btn" onclick="sendRpc('temple.drawFortune', {})">🎋 เสี่ยงเซียมซีเจ้าพ่อเห้งเจีย</button>
+          <button class="btn" onclick="sendRpc('temple.ringBell', { count: 1, readTts: true })">🔔 ตีระฆังทองคำ</button>
+          <button class="btn" onclick="sendRpc('temple.resetMerit', {})">♻️ รีเซ็ตแต้มบุญ & ระดับ Evolution</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>📡 3. เชื่อมต่อห้อง TikTok Live & ทดสอบโมเดลเสียงพูดภาษาไทย (Thai TTS)</h2>
+        <div class="row">
+          <input type="text" id="ttUser" placeholder="ใส่ @username TikTok ที่กำลัง Live..." />
+          <button class="btn gold" id="btnConn">เชื่อมต่อ Live</button>
+          <button class="btn" id="btnDisc">ตัดการเชื่อมต่อ</button>
         </div>
         <div class="row">
-          <input type="text" id="ttsDirectText" value="Nam mô A Di Đà Phật. Chùa Linh Ứng Online xin kính chào quý thí chủ thập phương." />
-          <button class="btn gold" id="btnSpeakMaiChi">🎙️ Đọc thử Giọng Mai Chi</button>
+          <select id="ttsVoiceSelect" style="max-width: 240px;">
+            <option value="thai_female">เสียงพากย์หญิงไทย (gTTS Thai)</option>
+            <option value="thai_vits">เสียงไทย VITS Local (sherpa-onnx)</option>
+          </select>
+          <input type="text" id="ttsDirectText" value="ขออัญเชิญบารมีองค์เจ้าพ่อเห้งเจีย ฉีเทียนต้าเซิ่ง ประทานพรโชคลาภความสำเร็จแด่ผู้มีจิตศรัทธาทุกท่านเทอญ" />
+          <button class="btn gold" id="btnSpeakThai">🎙️ ทดสอบพูดภาษาไทย</button>
         </div>
         <audio id="adminAudioPreview" controls style="width: 100%; height: 38px;"></audio>
       </section>
 
       <section class="card">
-        <h2>🙏 2. Gửi Lệnh Tương Tác JSON-RPC 2.0</h2>
+        <h2>💬 4. จำลองแชทผู้ชม TikTok & บันทึก JSON-RPC 2.0 (`/rpc`)</h2>
         <div class="row">
-          <input type="text" id="rpcUser" value="Đại Thí Chủ Minh Tâm" placeholder="Tên người xem..." />
-          <input type="text" id="rpcWish" value="Cầu gia đạo bình an, tài lộc vượng phát" placeholder="Lời cầu nguyện..." />
+          <input type="text" id="simComment" value="สาธุ ขอพรเจ้าพ่อเห้งเจียประทานโชคลาภก้อนใหญ่ด้วยเทอญ" placeholder="พิมพ์ข้อความแชท TikTok..." />
+          <button class="btn gold" id="btnSendComment">ส่งคอมเมนต์</button>
         </div>
-        <div class="action-grid">
-          <button class="btn gold" onclick="sendRpc('temple.burnIncense', { count: 3 })">🔥 Thắp 3 Nén Hương</button>
-          <button class="btn" onclick="sendRpc('temple.sendPrayer', {})">🏮 Thả Đèn Hoa Đăng</button>
-          <button class="btn" onclick="sendRpc('temple.strikeWoodenFish', { count: 9 })">🪵 Gõ Mõ 9 Nhịp</button>
-          <button class="btn" onclick="sendRpc('temple.ringBell', { count: 1, readTts: true })">🔔 Thỉnh Đại Hồng Chung</button>
-          <button class="btn" onclick="sendRpc('temple.drawFortune', {})">🎋 Xin Xăm / Gieo Quẻ</button>
-          <button class="btn" onclick="sendRpc('temple.offerGift', { giftType: 'fruit', coins: 30, giftName: 'Mâm Ngũ Quả Cát Tường' })">🍑 Dâng Mâm Ngũ Quả</button>
-          <button class="btn gold" onclick="sendRpc('temple.grandCeremony', { coins: 500, giftName: 'Đại Lễ Kim Long Chầu Phật' })">🐉 Đại Lễ Kim Long</button>
-          <button class="btn" onclick="sendRpc('temple.resetMerit', {})">♻️ Đặt Lại Bảng Công Đức</button>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>💬 3. Giả Lập Bình Luận Người Xem TikTok</h2>
-        <div class="row">
-          <input type="text" id="simComment" value="Con xin gieo quẻ cầu tài lộc đầu tháng ạ" placeholder="Nhập nội dung bình luận TikTok..." />
-          <button class="btn gold" id="btnSendComment">Gửi Comment</button>
-        </div>
-        <p style="font-size: 13px; color: var(--muted);">
-          Từ khóa tự động nhận diện: <code>thắp hương</code>, <code>bái phật</code>, <code>cầu ...</code>, <code>xin xăm / gieo quẻ</code>, <code>thỉnh chuông</code>, <code>gõ mõ</code>.
+        <p style="font-size: 12.5px; color: var(--muted);">
+          คำสั่งแชทที่ระบบตรวจจับอัตโนมัติ: <code>สาธุ</code>, <code>กราบ</code>, <code>จุดธูป</code>, <code>ขอพร ...</code>, <code>เซียมซี</code>, <code>ตีระฆัง</code>, <code>เคาะเกราะ</code>
         </p>
-      </section>
-
-      <section class="card">
-        <h2>🔌 4. Nhật Ký Phản Hồi JSON-RPC 2.0 (`/rpc`)</h2>
-        <pre id="rpcOutput">{ "status": "Sẵn sàng nhận lệnh JSON-RPC 2.0" }</pre>
+        <pre id="rpcOutput">{ "status": "พร้อมรับคำสั่ง JSON-RPC 2.0 ศาลเจ้าพ่อเห้งเจีย" }</pre>
       </section>
     </div>
   </div>
 
   <script>
     async function sendRpc(method, extraParams = {}) {
-      const user = document.getElementById('rpcUser').value.trim() || 'Thí Chủ';
+      const user = document.getElementById('rpcUser').value.trim() || 'ผู้มีจิตศรัทธา';
       const wish = document.getElementById('rpcWish').value.trim();
       const body = {
         jsonrpc: '2.0',
@@ -220,9 +345,10 @@
       const comment = document.getElementById('simComment').value.trim();
       sendRpc('temple.comment', { comment });
     };
-    document.getElementById('btnSpeakMaiChi').onclick = async () => {
+    document.getElementById('btnSpeakThai').onclick = async () => {
       const text = document.getElementById('ttsDirectText').value.trim();
-      const data = await sendRpc('temple.speak', { text, voice: 'maichi', broadcast: true });
+      const voice = document.getElementById('ttsVoiceSelect').value;
+      const data = await sendRpc('temple.speak', { text, voice, broadcast: true });
       if (data?.result?.url) {
         const player = document.getElementById('adminAudioPreview');
         player.src = data.result.url;
@@ -233,8 +359,9 @@
     async function refreshStatus() {
       const res = await fetch('/api/state');
       const st = await res.json();
+      const evo = st.evolution || {};
       document.getElementById('statusBanner').textContent =
-        `Hương đã thắp: ${st.totalIncense} | Tổng Công Đức: ${st.totalMerit} | ZeroTTS: ${st.tts?.status} (Giọng: ${st.tts?.voice})`;
+        `องค์ประธาน: LV.${evo.level || 1} (${evo.name || 'มุ้ยเกาอ๋อง'}) | แต้ม Evolution EXP: ${(st.evolutionExp || 0).toLocaleString()} | แต้มบุญรวม: ${(st.totalMerit || 0).toLocaleString()} | Thai TTS: ${st.tts?.status} (${st.tts?.voice})`;
     }
     refreshStatus();
     setInterval(refreshStatus, 4000);

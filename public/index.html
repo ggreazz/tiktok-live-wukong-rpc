@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chùa Linh Ứng Online — TikTok Live RPC (Đức Phật A Di Đà 9:16)</title>
+  <title>ศาลเจ้าพ่อเห้งเจีย (孙悟空 Sun Wukong) — TikTok Live Interactive 9:16</title>
+  <meta name="description" content="ระบบไลฟ์สดอินเทอร์แอคทีฟ ศาลเจ้าพ่อเห้งเจีย ซุนหงอคง (孙悟空) พร้อมระบบ Evolution 4 ระดับตามยอดส่งของขวัญ TikTok และเสียงอ่านภาษาไทย" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Noto+Serif:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@700&family=Noto+Sans+Thai:wght@400;600;700;800;900&family=Noto+Serif+TC:wght@700;900&family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <script type="importmap">
     {
@@ -21,18 +22,44 @@
 <body>
   <div class="app-workspace">
     <!-- ====================================================================
-         KHUNG 9:16 CHUẨN TIKTOK LIVE / OBS BROWSER SOURCE (1080 x 1920)
+         กรอบแสดงผล 9:16 มาตรฐาน TIKTOK LIVE / OBS BROWSER SOURCE (1080 x 1920)
          ==================================================================== -->
     <div class="stage-wrapper" id="stageWrapper">
-      <div class="stage-9x16" id="stage9x16">
-        <!-- 1. HÌNH NỀN CHÁNH ĐIỆN ĐỨC PHẬT A DI ĐÀ 8K SẮC NÉT -->
-        <img
-          src="/assets/amitabha_stage.png"
-          alt="Đức Phật A Di Đà Chánh Điện"
-          class="sanctuary-bg-img"
-        />
+      <div class="stage-9x16" id="stage9x16" data-evo-level="1">
+        <!-- 1. ภาพพื้นหลังองค์ประธาน เจ้าพ่อเห้งเจีย 4 ระดับการ EVOLUTION (สลับระดับแบบไร้รอยต่อ 0ms) -->
+        <div class="wukong-evolution-stage" id="wukongEvolutionStage">
+          <img
+            src="/assets/wukong/LV1.jpg"
+            alt="เจ้าพ่อเห้งเจีย ระดับที่ 1 มุ้ยเกาอ๋อง ถ้ำม่านน้ำตก"
+            class="sanctuary-bg-img evo-stage-img active"
+            data-level="1"
+            id="wukongImgLv1"
+          />
+          <img
+            src="/assets/wukong/LV2.jpg"
+            alt="เจ้าพ่อเห้งเจีย ระดับที่ 2 พญาวานรเหินเมฆา กระบองวิเศษ"
+            class="sanctuary-bg-img evo-stage-img"
+            data-level="2"
+            id="wukongImgLv2"
+          />
+          <img
+            src="/assets/wukong/LV3.jpg"
+            alt="เจ้าพ่อเห้งเจีย ระดับที่ 3 ฉีเทียนต้าเซิ่ง มหาเทพผู้เสมอฟ้า"
+            class="sanctuary-bg-img evo-stage-img"
+            data-level="3"
+            id="wukongImgLv3"
+          />
+          <img
+            src="/assets/wukong/LV4.jpg"
+            alt="เจ้าพ่อเห้งเจีย ระดับที่ 4 โต้วจั้นเซิ่งฝอ พุทธะผู้พิชิตมาร"
+            class="sanctuary-bg-img evo-stage-img"
+            data-level="4"
+            id="wukongImgLv4"
+          />
+          <div class="evolution-flash-overlay" id="evolutionFlashOverlay"></div>
+        </div>
 
-        <!-- 1B. HỆ THỐNG HÀO QUANG ĐỨC PHẬT A DI ĐÀ (XOAY CHUYỂN VẠN TRƯỢNG, KHÔNG CHE MẶT PHẬT) -->
+        <!-- 1B. รัศมีวงล้อธรรมจักรและแสงทิพย์หลังองค์เจ้าพ่อเห้งเจีย -->
         <div class="buddha-halo-system" id="buddhaHaloSystem">
           <div class="halo-sunburst"></div>
           <div class="halo-counter-rays"></div>
@@ -51,49 +78,184 @@
           </svg>
         </div>
 
-        <!-- HÀO QUANG ĐÀI SEN TRÊN TAY ĐỨC PHẬT A DI ĐÀ -->
         <div class="lotus-hand-halo" id="lotusHandHalo"></div>
 
-        <!-- 2. THANH TRẠNG THÁI MỎNG TRÊN ĐỈNH (KHÔNG CHE TƯỢNG PHẬT) -->
-        <header class="minimal-top-bar">
-          <div class="live-pill" id="liveStatusPill">
-            <span class="live-dot" id="liveDot"></span>
-            <span id="liveStatusText">CHÙA LINH ỨNG • ĐỨC PHẬT A DI ĐÀ</span>
+        <!-- 2. ป้ายชื่อศาลเจ้าพ่อเห้งเจีย & หลอดพลังศรัทธา / EVOLUTION BAR ด้านบน (ตามแบบ Ref Interactive UI) -->
+        <header class="shrine-header-top">
+          <div class="shrine-roof-plaque">
+            <div class="plaque-ornament left">🐉</div>
+            <div class="plaque-center">
+              <h1 class="plaque-title">ศาลเจ้าพ่อเห้งเจีย</h1>
+              <div class="plaque-subtitle" id="currentDeityStageLabel">
+                LV.1 มุ้ยเกาอ๋อง • พญาวานรถ้ำม่านน้ำตก (美猴王)
+              </div>
+            </div>
+            <div class="plaque-ornament right">🐉</div>
           </div>
-          <div class="top-Right-badges">
-            <div class="mini-stat-pill">
-              🔥 <strong id="statIncense">108</strong> hương • ✨ <strong id="statMerit">1,080</strong> CĐ
+
+          <!-- หลอดศรัทธาวันนี้ + หลอดบารมีอัพระดับองค์เทพ 4 ระดับ -->
+          <div class="faith-progress-container">
+            <div class="faith-progress-bar">
+              <div class="faith-progress-fill" id="faithProgressFill" style="width: 48%;"></div>
+              <div class="faith-progress-text" id="faithProgressText">
+                🏮 ศรัทธาวันนี้ <span id="statFaithToday">477</span> / <span id="statFaithTarget">1,000</span> • ครบแล้วแจกเซียมซีทั้งไลฟ์
+              </div>
+            </div>
+
+            <div class="evolution-bar-wrapper">
+              <div class="evo-progress-track">
+                <div class="evo-progress-fill" id="evoProgressFill" style="width: 48%;"></div>
+                <div class="evo-progress-label" id="evoProgressLabel">
+                  ⚡ พลังอัพระดับองค์เทพ: 477 / 1,000 EXP (สู่ LV.2 เหินเมฆากระบองทอง)
+                </div>
+              </div>
+              <div class="evo-stage-pills" id="evoStagePills">
+                <button type="button" class="evo-pill active" data-target-level="1" title="คลิกเพื่อดูปางที่ 1">
+                  LV.1 มุ้ยเกาอ๋อง
+                </button>
+                <button type="button" class="evo-pill" data-target-level="2" title="คลิกเพื่อดูปางที่ 2">
+                  LV.2 เหินเมฆา
+                </button>
+                <button type="button" class="evo-pill" data-target-level="3" title="คลิกเพื่อดูปางที่ 3">
+                  LV.3 ฉีเทียนต้าเซิ่ง
+                </button>
+                <button type="button" class="evo-pill" data-target-level="4" title="คลิกเพื่อดูปางที่ 4">
+                  LV.4 โต้วจั้นเซิ่งฝอ
+                </button>
+              </div>
             </div>
           </div>
         </header>
 
-        <!-- 3. CỘT SÁNG TÂM HƯƠNG & LƯ HƯƠNG TRUNG TÂM -->
+        <!-- 3. กรอบลายฉลุทองฝั่งซ้าย: พิมพ์ในแชท & สายบุญตัวจริง (ตามแบบ Ref Interactive UI) -->
+        <aside class="shrine-side-frame left-frame">
+          <div class="frame-crown-header">
+            <span>💬 พิมพ์ในแชท</span>
+          </div>
+          <div class="chat-guide-cards">
+            <div class="chat-guide-card" id="cardChatWalk" title="คลิกเพื่อเดินไปไหว้และจุดธูปถวายองค์เห้งเจีย">
+              <div class="speech-pill-gold">อะไรก็ได้</div>
+              <div class="guide-sub-action">→ เดินไปไหว้</div>
+            </div>
+
+            <div class="chat-guide-card" id="cardChatFortune" title="คลิกเพื่อเขย่าเซียมซีดูคำทำนาย">
+              <div class="speech-pill-gold">เซียมซี</div>
+              <div class="guide-sub-action">→ ดูคำทำนาย</div>
+            </div>
+
+            <div class="chat-guide-card" id="cardChatLike" title="คลิกเพื่อจุดธูปควันหอมและเคาะปักฮื้อ">
+              <div class="speech-pill-white">❤️ กดหัวใจรัวๆ</div>
+              <div class="guide-sub-action">→ ธูปควันหอม</div>
+            </div>
+          </div>
+
+          <div class="frame-divider"></div>
+
+          <div class="frame-crown-header leaderboard-crown">
+            <span>🏆 สายบุญตัวจริง</span>
+          </div>
+          <div class="shrine-leaderboard-list" id="leaderboardList"></div>
+
+          <div class="mini-status-strip">
+            <span class="live-dot" id="liveDot"></span>
+            <span id="liveStatusText">ศาลเจ้าพ่อเห้งเจีย • พร้อมรับคำอธิษฐาน</span>
+          </div>
+        </aside>
+
+        <!-- 4. กรอบลายฉลุทองฝั่งขวา: ส่งของขวัญ 4 ระดับเร่งการอัพระดับองค์เทพ (ตามแบบ Ref Interactive UI) -->
+        <aside class="shrine-side-frame right-frame">
+          <div class="frame-crown-header">
+            <span>🎁 ส่งของขวัญ</span>
+          </div>
+          <div class="gift-menu-cards">
+            <!-- Tier 1: 1 Coin -->
+            <div class="shrine-gift-item tier-1" id="giftItemLotus" title="ส่งดอกบัว (1 Coin • +15 EXP)">
+              <div class="gift-icon-box">🌹</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">ดอกบัว</div>
+                <div class="gift-item-sub">ถวายองค์เทพ • +15 EXP</div>
+              </div>
+            </div>
+
+            <!-- Tier 1: 5 Coins -->
+            <div class="shrine-gift-item tier-1" id="giftItemCandle" title="ส่งรูปเทียน (5 Coins • +75 EXP)">
+              <div class="gift-icon-box">🫰</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">รูปเทียน</div>
+                <div class="gift-item-sub">จุดบูชา • +75 EXP</div>
+              </div>
+            </div>
+
+            <!-- Tier 2: 20 Coins (1.8x) -->
+            <div class="shrine-gift-item tier-2" id="giftItemFortune" title="ส่งเซียมซีส่วนตัว (20 Coins • +600 EXP)">
+              <div class="gift-icon-box">🛍️</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">เซียมซีส่วนตัว</div>
+                <div class="gift-item-sub">ใบทำนาย • +600 EXP</div>
+              </div>
+            </div>
+
+            <!-- Tier 2: 30 Coins (1.8x) -->
+            <div class="shrine-gift-item tier-2" id="giftItemGoldBar" title="ส่งทองคำแท่ง / ลูกท้อ (30 Coins • +850 EXP)">
+              <div class="gift-icon-box">🍩</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">ทองคำแท่ง</div>
+                <div class="gift-item-sub">พรใหญ่ • +850 EXP</div>
+              </div>
+            </div>
+
+            <!-- Tier 3: 100 Coins (3.3x) -->
+            <div class="shrine-gift-item tier-3" id="giftItemGrandMerit" title="ร่วมบุญใหญ่ (100 Coins • +5,000 EXP พุ่งข้ามขั้น!)">
+              <div class="gift-icon-box">🕊️</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">ร่วมบุญใหญ่</div>
+                <div class="gift-item-sub">ชื่อขึ้นเต็มจอ • +5,000 EXP</div>
+              </div>
+            </div>
+
+            <!-- Tier 4: 500 Coins (4.5x Instant Max Evolution) -->
+            <div class="shrine-gift-item tier-4" id="giftItemMegaDragon" title="มหาบุญมังกรทอง (500 Coins • +32,500 EXP ปลดล็อก LV.4 ทันที!)">
+              <div class="gift-icon-box">🐉</div>
+              <div class="gift-info-box">
+                <div class="gift-item-title">มหาบุญ</div>
+                <div class="gift-item-sub">ฉลองทั้งไลฟ์ • อัพ LV.4!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-merit-counter">
+            🔥 ธูป <strong id="statIncense">108</strong> • ✨ บุญรวม <strong id="statMerit">21,248</strong>
+            <span hidden id="statWoodenFish">360</span>
+          </div>
+        </aside>
+
+        <!-- 5. ลำแสงทิพย์และกระถางธูปมังกรทองตรงกลาง -->
         <div class="sacred-light-beam" id="sacredLightBeam"></div>
 
-        <div class="incense-burner-zone" id="incenseBurnerZone" title="Bấm để Thắp Hương Dâng Phật">
+        <div class="incense-burner-zone" id="incenseBurnerZone" title="คลิกเพื่อจุดธูปถวายองค์เจ้าพ่อเห้งเจีย">
           <div class="incense-sticks-holder" id="incenseSticksHolder"></div>
         </div>
 
-        <!-- PHÁP KHÍ TƯƠNG TÁC HAI BÊN BÀN THỜ: ĐẠI HỒNG CHUNG & MÕ GỖ & ỐNG XĂM -->
-        <div class="ritual-hotspot bell-hotspot" id="bellStation" title="Bấm để Thỉnh Đại Hồng Chung">
+        <!-- ปุ่มเครื่องประกอบพิธีด้านข้างกระถางธูป -->
+        <div class="ritual-hotspot bell-hotspot" id="bellStation" title="คลิกเพื่อตีระฆังทองคำ">
           <span class="hotspot-icon">🔔</span>
-          <span class="hotspot-label">Thỉnh Chuông</span>
+          <span class="hotspot-label">ตีระฆังทอง</span>
         </div>
 
-        <div class="ritual-hotspot woodfish-hotspot" id="woodenFishStation" title="Bấm để Gõ Mõ Tích Công Đức">
+        <div class="ritual-hotspot woodfish-hotspot" id="woodenFishStation" title="คลิกเพื่อเคาะปักฮื้อสะสมบุญ">
           <span class="hotspot-icon">🪵</span>
-          <span class="hotspot-label">Gõ Mõ (<span id="statWoodenFish">360</span>)</span>
+          <span class="hotspot-label">เคาะปักฮื้อ</span>
         </div>
 
-        <div class="ritual-hotspot fortune-hotspot" id="fortuneCylinder" title="Bấm để Xin Xăm / Gieo Quẻ">
+        <div class="ritual-hotspot fortune-hotspot" id="fortuneCylinder" title="คลิกเพื่อเขย่าเซียมซีเจ้าพ่อเห้งเจีย">
           <span class="hotspot-icon">🎋</span>
-          <span class="hotspot-label">Xin Xăm</span>
+          <span class="hotspot-label">เสี่ยงเซียมซี</span>
         </div>
 
-        <!-- 4. CHỦ LỄ ĐANG DÂNG HƯƠNG TRƯỚC LƯ HƯƠNG ĐỒNG (GIỮA CHÁNH ĐIỆN) -->
+        <!-- 6. ผู้ศรัทธาหลักกำลังเดินขึ้นพรมแดงมากราบหน้ากระถางธูป -->
         <div class="central-worshipper" id="centralWorshipper">
           <div class="worshipper-wish-bubble" id="centralWishBubble">
-            “Cầu gia đình bình an, vạn sự cát tường như ý”
+            “ขอองค์เจ้าพ่อเห้งเจียประทานพรให้ค้าขายร่ำรวย โชคลาภไหลมาเทมา”
           </div>
           <div class="central-sprite-stack" id="centralSpriteStack">
             <img src="/assets/devotee_walk.png" data-pose="walk1" class="devotee-sprite pose-frame" alt="" />
@@ -108,89 +270,76 @@
           <div class="name-tag central-name-tag">
             <div class="tag-avatar" id="centralAvatar">🙏</div>
             <div class="tag-texts">
-              <div class="tag-name" id="centralName">Thí Chủ Minh Tâm</div>
-              <div class="tag-sub" id="centralAction">✨ Dâng hương • +15 Công Đức</div>
+              <div class="tag-name" id="centralName">เบิร์ด สายบุญ</div>
+              <div class="tag-sub" id="centralAction">✨ จุดธูปขอพร • +15 แต้มบุญ</div>
             </div>
           </div>
         </div>
 
-        <!-- 5. HÀNG 6 ĐỆM QUỲ VIP (TOP 6 BẢNG VÀNG CÔNG ĐỨC TRÊN BỤC GỖ) -->
+        <!-- 7. แถวเบาะกราบ VIP ของสายบุญอันดับสูงสุดหน้ากระถางธูป -->
         <div class="vip-cushions-layer" id="vipCushionsLayer"></div>
 
-        <!-- 6. ĐẠO TRÀNG NGƯỜI XEM QUỲ LỄ HAI BÊN THẢM ĐỎ (40 CHỖ NGỒI PHỐI CẢNH) -->
+        <!-- 8. ผู้ชมที่นั่งกราบสองข้างพรมแดง -->
         <div class="congregation-hall" id="congregationHall"></div>
 
-        <!-- 7. NGƯỜI XEM ĐANG BƯỚC ĐI TRÊN THẢM ĐỎ TIẾN LÊN DÂNG HƯƠNG -->
+        <!-- 9. ชั้นผู้เดินขึ้นพรมแดงและโคมลอยคำอธิษฐาน -->
         <div class="carpet-walker-layer" id="carpetWalkerLayer"></div>
-
-        <!-- 8. ĐÈN HOA ĐĂNG / SỚ CẦU NGUYỆN BAY LÊN -->
         <div class="sky-lanterns-layer" id="skyLanternsLayer"></div>
 
-        <!-- 9. THẾ GIỚI CHÙA 3D TÙY CHỌN (?3d=1); thay thế toàn bộ phối cảnh 2D khi hoạt động -->
+        <!-- 10. Canvas 3D สำรอง และ Canvas เอฟเฟกต์ควันธูป/ดอกบัวทอง 30 FPS -->
         <canvas id="temple3dCanvas" hidden aria-hidden="true"></canvas>
-
-        <!-- 10. LỚP CANVAS HIỆU ỨNG KHÓI HƯƠNG, HOA SEN RƠI & SÓNG ÂM -->
         <canvas id="templeCanvas"></canvas>
 
-        <!-- 10. THANH HUD GỌN GÀNG DƯỚI ĐÁY (GIỐNG MẪU THAM CHIẾU) -->
+        <!-- 11. แถบแจ้งเตือนผู้กำลังสักการะและปุ่มลัดด้านล่างพรมแดง -->
         <footer class="bottom-hud-bar">
-          <!-- Bên trái: Thông báo hành lễ + 3 ô hướng dẫn tương tác -->
-          <div class="hud-left-col">
-            <div class="hud-panel-kicker"><span>NGHI LỄ • CÚNG DƯỜNG</span><span>SANCTUARY INTERACTION</span></div>
-            <div class="hud-active-notice" id="hudActiveNotice">
-              <span class="flower-bullet">💮</span>
-              <strong id="devoteeNameLine">Thí Chủ Minh Tâm</strong>
-              <span>—</span>
-              <span id="devoteeActionTag">Dâng hương cầu bình an</span>
-              <span class="flower-bullet">💮</span>
-            </div>
-
-            <div class="hud-gift-cards">
-              <div class="hud-gift-card" id="cardIncense" title="Bấm để Thắp hương">
-                <div class="gift-coin-tag">1 COIN / CMT</div>
-                <div class="gift-card-body">
-                  <span class="gift-emoji">🔥</span>
-                  <span class="gift-title">Dâng hương</span>
-                </div>
-              </div>
-
-              <div class="hud-gift-card" id="cardBlessing" title="Bấm để Cầu phúc & Thả hoa đăng">
-                <div class="gift-coin-tag">5 COINS / TIM</div>
-                <div class="gift-card-body">
-                  <span class="gift-emoji">🏮</span>
-                  <span class="gift-title">Cầu phúc</span>
-                </div>
-              </div>
-
-              <div class="hud-gift-card" id="cardLotus" title="Bấm để Dâng Hoa Sen Vàng">
-                <div class="gift-coin-tag">10+ COINS</div>
-                <div class="gift-card-body">
-                  <span class="gift-emoji">🪷</span>
-                  <span class="gift-title">Hoa sen</span>
-                </div>
-              </div>
-            </div>
+          <div class="hud-panel-kicker" hidden aria-hidden="true">พิธีกรรมสักการะ • ถวายของขวัญ (NGHI LỄ • CÚNG DƯỜNG)</div>
+          <div class="hud-active-notice" id="hudActiveNotice">
+            <span class="flower-bullet">🐒</span>
+            <strong id="devoteeNameLine">เบิร์ด สายบุญ</strong>
+            <span>—</span>
+            <span id="devoteeActionTag">กำลังจุดธูปกราบขอพรองค์เจ้าพ่อเห้งเจีย</span>
+            <span class="tts-speaking-badge" id="ttsSpeakingBadge">🎙️ เสียงไทยพร้อมอ่าน</span>
           </div>
 
-          <!-- Bên phải: Bảng TẤM LÒNG THÀNH (Top Công Đức) -->
-          <div class="hud-right-leaderboard">
-            <div class="hud-lb-header">TẤM LÒNG THÀNH</div>
-            <div class="hud-lb-list" id="leaderboardList"></div>
+          <div class="hud-quick-cards">
+            <div class="hud-gift-card" id="cardIncense" title="จุดธูป 3 ดอกเดินไปไหว้">
+              <span class="gift-emoji">🔥</span>
+              <span class="gift-title">จุดธูปไหว้</span>
+            </div>
+            <div class="hud-gift-card" id="cardBlessing" title="ปล่อยโคมลอยขอพร">
+              <span class="gift-emoji">🏮</span>
+              <span class="gift-title">โคมขอพร</span>
+            </div>
+            <div class="hud-gift-card" id="cardLotus" title="ถวายดอกบัวทอง">
+              <span class="gift-emoji">🪷</span>
+              <span class="gift-title">ถวายดอกบัว</span>
+            </div>
+            <div class="hud-gift-card" id="cardFortuneBtn" title="เสี่ยงเซียมซีเจ้าพ่อเห้งเจีย">
+              <span class="gift-emoji">🎋</span>
+              <span class="gift-title">เซียมซี</span>
+            </div>
           </div>
         </footer>
 
-        <!-- BANNER ĐẠI LỄ KIM LONG CHẦU PHẬT -->
+        <!-- ป้ายประกาศมหาบุญ / ชื่อขึ้นเต็มจอ -->
         <div class="grand-ceremony-banner" id="grandCeremonyBanner">
-          <div class="grand-title" id="grandTitle">🐉 ĐẠI LỄ KIM LONG CHẦU PHẬT 🐉</div>
-          <div class="grand-sub" id="grandSub">Công đức vô lượng: Đại Thí Chủ dâng lễ</div>
+          <div class="grand-title" id="grandTitle">🐉 มหาบุญมังกรทองสวรรค์ 🐉</div>
+          <div class="grand-sub" id="grandSub">อนุโมทนาบุญใหญ่ • บารมีองค์เจ้าพ่อเห้งเจียพุ่งทะยาน!</div>
         </div>
 
-        <!-- MODAL TỜ GIẢI QUẺ LINH XĂM -->
+        <!-- ป้ายประกาศอัพระดับองค์เทพ (DEITY EVOLUTION LEVEL-UP BANNER) -->
+        <div class="evolution-levelup-banner" id="evolutionBanner">
+          <div class="evo-banner-kicker">⚡ บารมีศรัทธาเต็มเปี่ยม • องค์เทพเลื่อนระดับ! ⚡</div>
+          <div class="evo-banner-title" id="evoBannerTitle">ปางที่ 3: ฉีเทียนต้าเซิ่ง (齐天大圣)</div>
+          <div class="evo-banner-sub" id="evoBannerSub">มหาเทพเกราะทองผู้เสมอฟ้า เนตรอัคคีทองปราบหมู่มาร</div>
+        </div>
+
+        <!-- หน้าต่างใบคำทำนายเซียมซีเจ้าพ่อเห้งเจีย -->
         <div class="fortune-modal-overlay" id="fortuneModal">
           <div class="fortune-scroll-card">
-            <div class="fortune-badge" id="fortuneRankBadge">THƯỢNG THƯỢNG CÁT</div>
-            <div class="fortune-heading" id="fortuneTitle">Quẻ Số 1 — Nhật Xuất Đông Phương</div>
-            <div class="fortune-devotee" id="fortuneDevotee">Thí chủ xin quẻ: Minh Tâm</div>
+            <div class="fortune-badge" id="fortuneRankBadge">เซียมซีใบเอก • มหาโชคสูงสุด (上上签)</div>
+            <div class="fortune-heading" id="fortuneTitle">ใบที่ 1 — อาทิตย์อุทัยเหนือเขาฮัวกั่วซาน</div>
+            <div class="fortune-devotee" id="fortuneDevotee">ผู้เสี่ยงเซียมซี: เบิร์ด สายบุญ</div>
             <div class="fortune-poem" id="fortunePoem"></div>
             <div class="fortune-meaning" id="fortuneMeaning"></div>
           </div>
@@ -199,78 +348,115 @@
     </div>
 
     <!-- ====================================================================
-         BẢNG ĐIỀU KHIỂN NHANH RPC & GIẢ LẬP TRỰC TIẾP (ẨN KHI ?obs=1)
+         แผงควบคุมผู้จัดไลฟ์ & จำลองการส่งของขวัญอัพระดับ (ซ่อนอัตโนมัติเมื่อเปิด ?obs=1)
          ==================================================================== -->
     <aside class="quick-dock" id="quickDock">
       <div class="dock-header">
-        <div class="dock-title">🎛️ Điều Khiển Live & RPC</div>
-        <a href="/admin" target="_blank" class="dock-link">Mở Admin Đầy Đủ ↗</a>
+        <div class="dock-title">🎛️ แผงควบคุมไลฟ์ & อัพระดับเห้งเจีย</div>
+        <a href="/admin" target="_blank" class="dock-link">เปิดหน้า Admin เต็ม ↗</a>
       </div>
 
+      <!-- ส่วนที่ 1: เลือกระดับ Evolution 4 ปาง & ตารางความเร็วของขวัญ -->
       <div class="dock-section">
-        <div class="dock-section-title">🔊 Âm Thanh Chùa & Giọng Đọc Khấn</div>
-        <button class="dock-btn gold" id="btnUnlockAudio">
-          🔔 Bật Âm Thanh Chùa & Giọng Đọc
-        </button>
+        <div class="dock-section-title">🐒 ระดับ Evolution องค์เจ้าพ่อเห้งเจีย (4 ปาง)</div>
         <div class="dock-grid-2">
-          <button class="dock-btn active-toggle" id="btnToggleTts">🎙️ Giọng Đọc: BẬT</button>
-          <button class="dock-btn active-toggle" id="btnToggleMusic">🎵 Nhạc Nền: BẬT</button>
-          <button class="dock-btn active-toggle" id="btnToggleSfx">✨ Hiệu Ứng: BẬT</button>
+          <button class="dock-btn active-toggle" id="btnEvoLv1" data-set-level="1">
+            LV.1 มุ้ยเกาอ๋อง (0 EXP)
+          </button>
+          <button class="dock-btn" id="btnEvoLv2" data-set-level="2">
+            LV.2 เหินเมฆา (1,000 EXP)
+          </button>
+          <button class="dock-btn" id="btnEvoLv3" data-set-level="3">
+            LV.3 ฉีเทียนต้าเซิ่ง (5,000 EXP)
+          </button>
+          <button class="dock-btn" id="btnEvoLv4" data-set-level="4">
+            LV.4 โต้วจั้นเซิ่งฝอ (15,000 EXP)
+          </button>
+        </div>
+        <div class="evo-economy-note">
+          💡 <strong>ระบบเร่งขั้นตามมูลค่าของขวัญ 4 ระดับ:</strong><br/>
+          • <strong>Tier 1 (1–9 Coins):</strong> ×15 EXP/Coin (กุหลาบ +15, เทียน +75)<br/>
+          • <strong>Tier 2 (10–99 Coins):</strong> ×25 EXP + โบนัส 100 (เซียมซี +600, ทองแท่ง +850)<br/>
+          • <strong>Tier 3 (100–499 Coins):</strong> ×45 EXP + โบนัส 500 (ร่วมบุญใหญ่ 100 Coins = <strong>+5,000 EXP</strong> พุ่งสู่ LV.3 ทันที!)<br/>
+          • <strong>Tier 4 (500+ Coins):</strong> ×60 EXP + โบนัส 2,500 (มหาบุญ 500 Coins = <strong>+32,500 EXP</strong> ปลดล็อก LV.4 ทันที!)
+        </div>
+      </div>
+
+      <!-- ส่วนที่ 2: เสียงพูดภาษาไทย & เพลงบรรเลงศาลเจ้า -->
+      <div class="dock-section">
+        <div class="dock-section-title">🔊 ระบบเสียงพูดภาษาไทย (Thai TTS) & เพลงศาลเจ้า</div>
+        <button class="dock-btn gold" id="btnUnlockAudio">
+          🔔 เปิดระบบเสียงศาลเจ้าพ่อเห้งเจีย & เสียงพูดไทย
+        </button>
+        <div class="dock-input-row">
+          <select id="selectTtsVoice" class="dock-input">
+            <option value="thai_female">🎙️ โมเดลเสียงหญิงไทย (Google Thai Neural)</option>
+            <option value="thai_vits">🎙️ โมเดลเสียงไทย VITS ONNX (Offline 100%)</option>
+          </select>
+        </div>
+        <div class="dock-grid-2">
+          <button class="dock-btn active-toggle" id="btnToggleTts">🎙️ เสียงพูดไทย: เปิด</button>
+          <button class="dock-btn active-toggle" id="btnToggleMusic">🎵 เพลงบรรเลง: เปิด</button>
+          <button class="dock-btn active-toggle" id="btnToggleSfx">✨ เอฟเฟกต์เสียง: เปิด</button>
+          <button class="dock-btn" id="btnResetMerit">♻️ รีเซ็ตระดับเป็น LV.1</button>
         </div>
         <div class="volume-control-row">
           <div class="volume-label-line">
-            <span>🎵 Âm lượng Nhạc nền</span>
+            <span>🎵 ความดังเพลงบรรเลง</span>
             <strong id="valMusicVol">65%</strong>
           </div>
           <input type="range" id="sliderMusicVol" class="volume-slider" min="0" max="100" value="65" />
         </div>
         <div class="volume-control-row">
           <div class="volume-label-line">
-            <span>🎙️ Âm lượng Giọng đọc</span>
+            <span>🎙️ ความดังเสียงพูดภาษาไทย</span>
             <strong id="valTtsVol">95%</strong>
           </div>
           <input type="range" id="sliderTtsVol" class="volume-slider" min="0" max="100" value="95" />
         </div>
         <div class="volume-control-row">
           <div class="volume-label-line">
-            <span>✨ Âm lượng Hiệu ứng</span>
+            <span>✨ ความดังเอฟเฟกต์</span>
             <strong id="valSfxVol">80%</strong>
           </div>
           <input type="range" id="sliderSfxVol" class="volume-slider" min="0" max="100" value="80" />
         </div>
       </div>
 
+      <!-- ส่วนที่ 3: เชื่อมต่อห้อง TikTok Live -->
       <div class="dock-section">
-        <div class="dock-section-title">📡 Kết Nối PHÒNG TIKTOK LIVE</div>
+        <div class="dock-section-title">📡 เชื่อมต่อห้อง TIKTOK LIVE จริง</div>
         <div class="dock-input-row">
-          <input type="text" id="inputTikTokUser" class="dock-input" value="@zenfacts_vn" placeholder="Nhập @username hoặc link TikTok Live..." />
-          <button class="dock-btn gold" id="btnConnectTikTok">Kết Nối</button>
+          <input type="text" id="inputTikTokUser" class="dock-input" value="@wukong_shrine_th" placeholder="ใส่ @username ห้อง TikTok Live..." />
+          <button class="dock-btn gold" id="btnConnectTikTok">เชื่อมต่อ</button>
         </div>
         <button class="dock-btn" id="btnToggleAutoSim">
-          🤖 Tự động Giả lập Người Xem: TẮT
+          🤖 จำลองผู้ชมส่งของขวัญอัตโนมัติ: ปิด
         </button>
       </div>
 
+      <!-- ส่วนที่ 4: ทดสอบส่งของขวัญ 4 ระดับ & พิธีกรรม -->
       <div class="dock-section">
-        <div class="dock-section-title">🙏 Kích Hoạt Nghi Thức Tương Tác (RPC)</div>
-        <input type="text" id="inputDevoteeName" class="dock-input" value="Quỳnh_Finn" placeholder="Tên người xem / Thí chủ..." />
-        <input type="text" id="inputDevoteeWish" class="dock-input" value="Cầu cho gia đình bình an, tài lộc hanh thông, vạn sự như ý" placeholder="Lời cầu nguyện..." />
+        <div class="dock-section-title">🎁 ทดสอบส่งของขวัญ TikTok 4 ระดับ & ขอพร</div>
+        <input type="text" id="inputDevoteeName" class="dock-input" value="คุณเบิร์ด สายบุญ" placeholder="ชื่อผู้ชม / สายบุญ..." />
+        <input type="text" id="inputDevoteeWish" class="dock-input" value="ขอองค์เจ้าพ่อเห้งเจียประทานโชคลาภ ค้าขายร่ำรวย สมปรารถนาทุกประการ" placeholder="คำอธิษฐานภาษาไทย..." />
 
         <div class="dock-grid-2">
-          <button class="dock-btn gold" id="btnRpcIncense">🔥 Thắp 3 Nén Hương</button>
-          <button class="dock-btn" id="btnRpcLantern">🏮 Thả Đèn Hoa Đăng</button>
-          <button class="dock-btn" id="btnRpcWoodenFish">🪵 Gõ Mõ (+5)</button>
-          <button class="dock-btn" id="btnRpcBell">🔔 Thỉnh Chuông Chùa</button>
-          <button class="dock-btn" id="btnRpcFortune">🎋 Xin Xăm / Gieo Quẻ</button>
-          <button class="dock-btn" id="btnRpcGiftLotus">🪷 Dâng Hoa Sen Vàng</button>
+          <button class="dock-btn" id="btnRpcIncense">🔥 จุดธูปเดินไปไหว้ (+9 EXP)</button>
+          <button class="dock-btn" id="btnRpcFortune">🎋 เขย่าเซียมซี (+10 EXP)</button>
+          <button class="dock-btn" id="btnRpcGiftLotus">🌹 Tier 1: ดอกบัว (1 Coin • +15 EXP)</button>
+          <button class="dock-btn" id="btnRpcGiftCandle">🫰 Tier 1: รูปเทียน (5 Coins • +75 EXP)</button>
+          <button class="dock-btn gold" id="btnRpcGiftGold">🍩 Tier 2: ทองคำแท่ง (30 Coins • +850 EXP)</button>
+          <button class="dock-btn gold" id="btnRpcGiftRocket">🚀 Tier 3: ร่วมบุญใหญ่ (100 Coins • +5,000 EXP)</button>
         </div>
         <button class="dock-btn gold" id="btnRpcGrandCeremony">
-          🐉 Đại Lễ Kim Long Chầu Phật (Quà Lớn)
+          🐉 Tier 4: มหาบุญมังกรทอง (500 Coins • +32,500 EXP อัพ LV.4 ทันที!)
         </button>
       </div>
 
+      <!-- ส่วนที่ 5: บันทึกเหตุการณ์ล่าสุด -->
       <div class="dock-section">
-        <div class="dock-section-title">📜 Nhật Ký Tương Tác Gần Nhất</div>
+        <div class="dock-section-title">📜 ประวัติการสักการะและของขวัญล่าสุด</div>
         <div class="event-feed" id="eventFeed"></div>
       </div>
     </aside>

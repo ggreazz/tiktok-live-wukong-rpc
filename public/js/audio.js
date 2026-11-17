@@ -1,9 +1,8 @@
 /**
- * TempleAudioEngine
- * - Nhạc nền: Phát ambience tổng hợp lặp vô tận êm dịu (có thể thay bằng bản thu hợp lệ),
- *   tự động hạ nhỏ âm lượng (ducking) khi có giọng đọc lời khấn để không bị đè tiếng hay rè/xước.
- * - Pháp khí: Tổng hợp tiếng Mõ gỗ, Đại Hồng Chung, Ống xăm nhẹ nhàng, không vượt ngưỡng 0dBFS.
- * - Giọng đọc: Hàng đợi ZeroTTS phát tuần tự mượt mà.
+ * TempleAudioEngine (Thai TTS + Chinese Shrine Web Audio Synthesizer)
+ * - เพลงบรรเลงศาลเจ้าพ่อเห้งเจีย (Pentatonic Guqin/zen synth loop) พร้อมระบบ Auto-Ducking ลดเสียงเพลงอัตโนมัติขณะอ่านคำอธิษฐาน
+ * - เสียงเครื่องประกอบพิธี: ปักฮื้อ (ปลาไม้มงคล), ระฆังทองคำ, กระบอกเซียมซี, ระฆังหยก และเสียงประกาศเลื่อนระดับองค์เทพ (Evolution Fanfare)
+ * - ระบบคิวเสียงพูดภาษาไทย (Thai TTS Worker: Google Thai TTS + Local VITS-MMS-THA ONNX Model)
  */
 class TempleAudioEngine {
   constructor() {
@@ -15,16 +14,13 @@ class TempleAudioEngine {
     this.giftSfxGroups = new Map();
     this.bgMusicEnabled = true;
     this.ttsEnabled = true;
-    this.ttsVoice = 'maichi';
+    this.ttsVoice = localStorage.getItem('temple_tts_voice') || 'thai_female';
 
-    // Nhạc nền "Nam Mô A Di Đà Phật.m4a" — mặc định 65%, cho phép chỉnh trực tiếp 0% - 100%
     const savedMusicVol = parseFloat(localStorage.getItem('temple_music_vol'));
     const savedTtsVol = parseFloat(localStorage.getItem('temple_tts_vol'));
     this.bgBaseVolume = Number.isFinite(savedMusicVol) ? Math.max(0, Math.min(1, savedMusicVol)) : 0.65;
     this.ttsVolume = Number.isFinite(savedTtsVol) ? Math.max(0, Math.min(1, savedTtsVol)) : 0.95;
 
-    // No bundled chant recording exists in public/assets yet. Use the
-    // generated ambient loop directly instead of requesting a missing file.
     this.useSynthMusicFallback = true;
     this.synthBgTimer = null;
     this.bgAudio = null;
@@ -42,9 +38,6 @@ class TempleAudioEngine {
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
-    // Route every synthesized SFX through one shared dynamics stage. Several
-    // layered sounds (e.g. explosion noise + sub, or a multi-part bell) can
-    // otherwise sum above full scale when effects overlap.
     if (!this.sfxOutput) {
       if (typeof this.ctx.createDynamicsCompressor === 'function') {
         this.sfxOutput = this.ctx.createDynamicsCompressor();
@@ -70,9 +63,6 @@ class TempleAudioEngine {
     return this.ctx;
   }
 
-  // --------------------------------------------------------------------------
-  // 1. NHẠC NỀN "NAM MÔ A DI ĐÀ PHẬT.M4A" (CÓ AUTO-DUCKING KHI ĐỌC LỜI KHẤN)
-  // --------------------------------------------------------------------------
   getDuckedVolume() {
     return Math.max(0.08, +(this.bgBaseVolume * 0.35).toFixed(2));
   }
@@ -117,6 +107,14 @@ class TempleAudioEngine {
     if (this.currentAudio) {
       this.currentAudio.volume = this.ttsVolume;
     }
+  }
+
+  setTtsVoice(voice) {
+    if (!voice) return;
+    this.ttsVoice = String(voice).toLowerCase();
+    try {
+      localStorage.setItem('temple_tts_voice', this.ttsVoice);
+    } catch (_) {}
   }
 
   startZenAmbience() {
@@ -182,7 +180,7 @@ class TempleAudioEngine {
 
   stopZenAmbience() {
     try {
-      this.bgAudio.pause();
+      this.bgAudio?.pause();
     } catch (_) {}
     if (this.synthBgTimer) {
       clearInterval(this.synthBgTimer);
@@ -199,9 +197,6 @@ class TempleAudioEngine {
     } catch (_) {}
   }
 
-  // --------------------------------------------------------------------------
-  // 2. TIẾNG MÕ GỖ TỤNG KINH (WOODEN FISH PERCUSSION SYNTH)
-  // --------------------------------------------------------------------------
   playWoodenFish(pitchMultiplier = 1.0) {
     if (!this.sfxEnabled) return;
     try {
@@ -241,9 +236,6 @@ class TempleAudioEngine {
     } catch (_) {}
   }
 
-  // --------------------------------------------------------------------------
-  // 3. TIẾNG ĐẠI HỒNG CHUNG (TEMPLE BRONZE BELL)
-  // --------------------------------------------------------------------------
   playTempleBell(intensity = 1.0) {
     if (!this.sfxEnabled) return;
     try {
@@ -285,9 +277,31 @@ class TempleAudioEngine {
     } catch (_) {}
   }
 
-  // --------------------------------------------------------------------------
-  // 4. TIẾNG LẮC ỐNG XĂM TRE (FORTUNE STICK SHAKER)
-  // --------------------------------------------------------------------------
+  playEvolutionFanfare() {
+    if (!this.sfxEnabled) return;
+    try {
+      this.playTempleBell(1.2);
+      const ctx = this.ensureContext();
+      const now = ctx.currentTime;
+      const chord = [523.25, 659.25, 783.99, 1046.5];
+      chord.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = now + idx * 0.11;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.linearRampToValueAtTime(0.14, start + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 1.8);
+        osc.connect(gain);
+        gain.connect(this.sfxGain || ctx.destination);
+        osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+        osc.start(start);
+        osc.stop(start + 1.85);
+      });
+    } catch (_) {}
+  }
+
   playFortuneShake() {
     if (!this.sfxEnabled) return;
     for (let i = 0; i < 5; i++) {
@@ -297,9 +311,6 @@ class TempleAudioEngine {
     }
   }
 
-  // --------------------------------------------------------------------------
-  // 5. TIẾNG CHUÔNG NGỌC DÂNG LỄ / THẮP HƯƠNG (SINGING CHIME)
-  // --------------------------------------------------------------------------
   playIncenseChime() {
     if (!this.sfxEnabled) return;
     try {
@@ -328,9 +339,6 @@ class TempleAudioEngine {
     } catch (_) {}
   }
 
-  // --------------------------------------------------------------------------
-  // 6. GIFT GAMEPLAY SOUND EFFECTS (Web Audio synthesis; no external assets)
-  // --------------------------------------------------------------------------
   getGiftSfxOutput(groupId) {
     if (groupId == null || groupId === '') return this.sfxGain || this.ctx.destination;
     const key = String(groupId);
@@ -582,7 +590,7 @@ class TempleAudioEngine {
   }
 
   // --------------------------------------------------------------------------
-  // 7. ZEROTTS VOICE QUEUE & PREFETCHER
+  // THAI TTS QUEUE & PREFETCHER
   // --------------------------------------------------------------------------
   enqueueTts(text, options = {}) {
     const onStart = typeof options.onStart === 'function' ? options.onStart : null;
@@ -590,13 +598,13 @@ class TempleAudioEngine {
 
     if (!this.ttsEnabled) {
       if (onStart) onStart();
-      if (onEnd) setTimeout(onEnd, 5500);
+      if (onEnd) setTimeout(onEnd, 4500);
       return;
     }
     const clean = String(text || '').trim();
     if (!clean) {
       if (onStart) onStart();
-      if (onEnd) setTimeout(onEnd, 5500);
+      if (onEnd) setTimeout(onEnd, 4500);
       return;
     }
 
@@ -609,7 +617,7 @@ class TempleAudioEngine {
     const item = {
       id: `tts_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       text: clean,
-      voice: (options.voice || this.ttsVoice || 'maichi').toLowerCase(),
+      voice: (options.voice || this.ttsVoice || 'thai_female').toLowerCase(),
       url: options.url || null,
       onStart,
       onEnd,
@@ -624,7 +632,7 @@ class TempleAudioEngine {
     this.processTtsQueue();
   }
 
-  async fetchZeroTtsAudio(text, voice = 'maichi') {
+  async fetchZeroTtsAudio(text, voice = 'thai_female') {
     try {
       const res = await fetch('/api/tts', {
         method: 'POST',
@@ -635,7 +643,7 @@ class TempleAudioEngine {
       if (data && data.ok && data.url) {
         return data;
       }
-      return { ok: false, error: data?.error || 'ZeroTTS unavailable' };
+      return { ok: false, error: data?.error || 'Thai TTS unavailable' };
     } catch (err) {
       return { ok: false, error: err.message };
     }
@@ -665,10 +673,11 @@ class TempleAudioEngine {
         if (item.onEnd) item.onEnd();
       } else {
         if (item.onStart) item.onStart();
-        if (item.onEnd) setTimeout(item.onEnd, 5500);
+        await this.playBrowserSpeechFallback(item.text);
+        if (item.onEnd) item.onEnd();
       }
     } catch (err) {
-      console.warn('[ZeroTTS Playback Warning]', err);
+      console.warn('[ThaiTTS Playback Warning]', err);
       if (item.onStart) item.onStart();
       if (item.onEnd) item.onEnd();
     } finally {
@@ -682,6 +691,24 @@ class TempleAudioEngine {
         setTimeout(() => this.processTtsQueue(), 250);
       }
     }
+  }
+
+  playBrowserSpeechFallback(text) {
+    return new Promise((resolve) => {
+      try {
+        if ('speechSynthesis' in window) {
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'th-TH';
+          utter.volume = this.ttsVolume;
+          utter.onend = () => resolve();
+          utter.onerror = () => resolve();
+          window.speechSynthesis.speak(utter);
+          setTimeout(resolve, 6500);
+          return;
+        }
+      } catch (_) {}
+      setTimeout(resolve, 3500);
+    });
   }
 
   playWavUrl(url) {

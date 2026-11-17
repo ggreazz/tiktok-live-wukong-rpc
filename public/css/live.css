@@ -2544,3 +2544,692 @@ body.obs-mode .stage-wrapper {
     font-size: 7px;
   }
 }
+
+/* ==========================================================================
+   SUN WUKONG (孙悟空 • เจ้าพ่อเห้งเจีย) 4-STAGE EVOLUTION & REF UI OVERLAY
+   ========================================================================== */
+html, body {
+  font-family: 'Prompt', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.wukong-evolution-stage {
+  position: absolute;
+  inset: 0;
+  width: 1080px;
+  height: 1920px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.evo-stage-img {
+  position: absolute;
+  inset: 0;
+  width: 1080px;
+  height: 1920px;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0;
+  transform: scale(1.015);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.evo-stage-img.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.evolution-flash-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 44%,
+    rgba(255, 250, 205, 0.96) 0%,
+    rgba(255, 196, 45, 0.72) 32%,
+    rgba(255, 87, 34, 0.35) 62%,
+    transparent 85%
+  );
+  transition: opacity 0.45s ease-out;
+}
+
+.evolution-flash-overlay.flash {
+  opacity: 1;
+}
+
+/* Align Halo & Incense Burner with LV1.jpg - LV4.jpg sacred geometry */
+.buddha-halo-system {
+  left: 540px;
+  top: 490px;
+  width: 680px;
+  height: 680px;
+  opacity: 0.62;
+}
+
+.stage-9x16[data-evo-level="3"] .halo-sunburst {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 215, 90, 0.48) 0deg 5deg,
+    rgba(255, 82, 28, 0.14) 5deg 12deg,
+    rgba(255, 240, 160, 0.38) 12deg 16deg,
+    rgba(255, 60, 15, 0.08) 16deg 24deg
+  );
+}
+
+.stage-9x16[data-evo-level="4"] .buddha-halo-system {
+  opacity: 0.88;
+  transform: translate3d(-50%, -50%, 0) scale(1.08);
+}
+
+.lotus-hand-halo {
+  left: 540px;
+  top: 760px;
+  opacity: 0.55;
+}
+
+.sacred-light-beam {
+  left: 540px;
+  top: 560px;
+  height: 520px;
+}
+
+.incense-burner-zone {
+  top: 985px;
+  left: 50%;
+  width: 220px;
+  height: 230px;
+}
+
+.central-worshipper {
+  left: 540px;
+  top: 1235px;
+}
+
+.bell-hotspot {
+  top: 1230px;
+  left: 28px;
+}
+.woodfish-hotspot {
+  top: 1230px;
+  right: 28px;
+}
+.fortune-hotspot {
+  top: 1170px;
+  right: 28px;
+}
+
+/* ==========================================================================
+   TOP CHINESE PALACE PLAQUE & FAITH / EVOLUTION PROGRESS BAR (Ref_UI.jpg)
+   ========================================================================== */
+.shrine-header-top {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  z-index: 26;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.shrine-roof-plaque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 34px;
+  min-width: 560px;
+  background: linear-gradient(180deg, #16302b 0%, #0b1c19 52%, #1d0c08 100%);
+  border: 3.5px solid #f5c453;
+  outline: 2px solid #7a1c12;
+  border-radius: 18px;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.72),
+    inset 0 0 18px rgba(245, 196, 83, 0.28);
+}
+
+.plaque-ornament {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+.plaque-center {
+  text-align: center;
+}
+
+.plaque-title {
+  font-family: 'Prompt', 'Noto Sans Thai', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.08;
+  color: #ffe27a;
+  letter-spacing: 1px;
+  text-shadow:
+    0 2px 0 #591109,
+    0 4px 12px rgba(0, 0, 0, 0.85),
+    0 0 18px rgba(255, 204, 68, 0.55);
+}
+
+.plaque-subtitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff3d1;
+  margin-top: 2px;
+  letter-spacing: 0.4px;
+}
+
+.faith-progress-container {
+  width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.faith-progress-bar {
+  position: relative;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(24, 7, 5, 0.92);
+  border: 2.5px solid #f4c150;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+}
+
+.faith-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #ffd54f 0%, #ff9800 55%, #ff5722 100%);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faith-progress-text {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 10, 5, 0.9);
+}
+
+.evolution-bar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(18, 5, 3, 0.92);
+  border: 1.5px solid rgba(244, 193, 80, 0.68);
+  border-radius: 14px;
+  padding: 5px 10px;
+}
+
+.evo-progress-track {
+  position: relative;
+  flex: 1;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(45, 12, 8, 0.95);
+  border: 1.5px solid rgba(255, 215, 100, 0.55);
+  overflow: hidden;
+}
+
+.evo-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #ab47bc 0%, #ff7043 45%, #ffd54f 100%);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.evo-progress-label {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff9e6;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+}
+
+.evo-stage-pills {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.evo-pill {
+  cursor: pointer;
+  border: 1.5px solid rgba(244, 193, 80, 0.5);
+  background: rgba(42, 10, 7, 0.92);
+  color: #ebd3a7;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.evo-pill:hover {
+  border-color: #ffe57f;
+  transform: translateY(-1px);
+}
+
+.evo-pill.active {
+  background: linear-gradient(180deg, #ffe066 0%, #d48806 100%);
+  color: #240603;
+  border-color: #fff8cc;
+  box-shadow: 0 0 12px rgba(255, 214, 70, 0.65);
+}
+
+/* ==========================================================================
+   LEFT & RIGHT ORNATE CHINESE GOLDEN FRAMES (Ref Interactive UI Layout)
+   ========================================================================== */
+.shrine-side-frame {
+  position: absolute;
+  top: 215px;
+  width: 246px;
+  z-index: 22;
+  background: linear-gradient(180deg, rgba(64, 11, 8, 0.92) 0%, rgba(28, 5, 4, 0.94) 100%);
+  border: 3px solid #f0bc46;
+  outline: 2px solid #6b110b;
+  border-radius: 18px;
+  padding: 12px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 2px rgba(255, 232, 156, 0.22);
+}
+
+.shrine-side-frame.left-frame {
+  left: 16px;
+}
+
+.shrine-side-frame.right-frame {
+  right: 16px;
+}
+
+.frame-crown-header {
+  background: linear-gradient(90deg, #540d08 0%, #8f1a11 50%, #540d08 100%);
+  border: 2px solid #f4c150;
+  border-radius: 12px;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 900;
+  color: #ffe89e;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85);
+}
+
+.chat-guide-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.chat-guide-card {
+  cursor: pointer;
+  background: rgba(18, 4, 3, 0.88);
+  border: 1.5px solid rgba(244, 193, 80, 0.55);
+  border-radius: 14px;
+  padding: 10px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.chat-guide-card:hover {
+  transform: translateY(-2px);
+  border-color: #ffe694;
+}
+
+.speech-pill-gold {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe57f 0%, #eab026 100%);
+  border: 2px solid #fff6cc;
+  color: #260704;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+.speech-pill-white {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5e6d3 100%);
+  border: 2px solid #ffd54f;
+  color: #2b0704;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.15;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+.guide-sub-action {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff6e0;
+}
+
+.frame-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #f4c150, transparent);
+  margin: 2px 0;
+}
+
+.shrine-leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 170px;
+}
+
+.shrine-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 4, 3, 0.85);
+  border: 1px solid rgba(244, 193, 80, 0.42);
+  border-radius: 12px;
+  padding: 6px 8px;
+}
+
+.shrine-lb-medal {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffe082, #ca8a14);
+  color: #240603;
+  font-size: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1.5px solid #fff3b0;
+}
+
+.shrine-lb-medal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shrine-lb-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.shrine-lb-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shrine-lb-score {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #ffd54f;
+}
+
+.mini-status-strip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 9px;
+  border-radius: 10px;
+  background: rgba(12, 3, 2, 0.9);
+  border: 1px solid rgba(244, 193, 80, 0.4);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffe7b2;
+}
+
+/* Right Frame: 6 TikTok Gift Cards across 4 Evolution Tiers */
+.gift-menu-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shrine-gift-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  background: rgba(20, 5, 3, 0.9);
+  border: 1.5px solid rgba(244, 193, 80, 0.55);
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.shrine-gift-item:hover {
+  transform: translateX(-3px);
+  border-color: #fff1a8;
+  background: rgba(58, 12, 8, 0.95);
+}
+
+.shrine-gift-item.tier-3 {
+  border-color: #ffb74d;
+  background: linear-gradient(135deg, rgba(78, 18, 9, 0.92), rgba(26, 6, 4, 0.95));
+}
+
+.shrine-gift-item.tier-4 {
+  border-color: #ffe57f;
+  background: linear-gradient(135deg, rgba(118, 22, 12, 0.95), rgba(45, 9, 5, 0.96));
+  box-shadow: 0 0 14px rgba(255, 193, 7, 0.32);
+}
+
+.gift-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: radial-gradient(circle, rgba(255, 215, 90, 0.25), rgba(32, 7, 4, 0.85));
+  border: 1px solid rgba(244, 193, 80, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.gift-info-box {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.gift-item-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.gift-item-sub {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffd54f;
+}
+
+.mini-merit-counter {
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(12, 3, 2, 0.9);
+  border: 1px solid rgba(244, 193, 80, 0.4);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffe8a3;
+}
+
+/* ==========================================================================
+   BOTTOM COMPACT BAR & EVOLUTION LEVEL-UP BANNER
+   ========================================================================== */
+.bottom-hud-bar {
+  position: absolute;
+  bottom: 18px;
+  left: 24px;
+  right: 24px;
+  height: auto;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-active-notice {
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(24, 6, 4, 0.94);
+  border: 2px solid rgba(244, 193, 80, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 17px;
+  color: #ffe89e;
+}
+
+.tts-speaking-badge {
+  margin-left: auto;
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: rgba(244, 193, 80, 0.18);
+  border: 1px solid rgba(244, 193, 80, 0.55);
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff3b0;
+}
+
+.tts-speaking-badge.speaking {
+  background: linear-gradient(90deg, #d84315, #f57f17);
+  color: #ffffff;
+  border-color: #fff59d;
+}
+
+.hud-quick-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.hud-quick-cards .hud-gift-card {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: rgba(24, 6, 4, 0.92);
+  border: 1.5px solid rgba(244, 193, 80, 0.6);
+}
+
+.hud-quick-cards .gift-emoji {
+  font-size: 24px;
+}
+
+.hud-quick-cards .gift-title {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #ffe89e;
+}
+
+.evolution-levelup-banner {
+  position: absolute;
+  top: 675px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0) scale(0.88);
+  width: 880px;
+  padding: 24px 32px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, #4a0704 0%, #9c160c 50%, #3d0503 100%);
+  border: 4px solid #ffe57f;
+  outline: 3px solid #7f1209;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 200, 50, 0.65);
+  text-align: center;
+  z-index: 49;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.evolution-levelup-banner.visible {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.evo-banner-kicker {
+  display: inline-block;
+  padding: 4px 18px;
+  border-radius: 999px;
+  background: rgba(255, 224, 102, 0.22);
+  border: 1.5px solid #ffe066;
+  color: #fff3b0;
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.evo-banner-title {
+  font-size: 38px;
+  font-weight: 900;
+  color: #ffe57f;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.85);
+}
+
+.evo-banner-sub {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 6px;
+}
+
+.sky-lantern::before {
+  content: '🏮 โคมอธิษฐานขอพรเจ้าพ่อเห้งเจีย';
+}
+
+.evo-economy-note {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #f5deb3;
+  background: rgba(244, 193, 80, 0.08);
+  border: 1px dashed rgba(244, 193, 80, 0.4);
+  border-radius: 10px;
+  padding: 8px 10px;
+}

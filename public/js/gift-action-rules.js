@@ -8,10 +8,10 @@ export function normalizeGiftName(event) {
 
 export function resolveGiftAction(event) {
   const name = normalizeGiftName(event);
-  if (/\b(rocket|ten lua)\b/.test(name)) return 'rocket';
-  if (/\b(dragon|rong)\b/.test(name)) return 'dragon';
-  if (/\b(donut|doughnut)\b/.test(name)) return 'donut';
-  if (/\b(rose|hoa hong)\b/.test(name)) return 'rose';
+  if (/\b(rocket|ten lua)\b/.test(name) || /(จรวด|กระบองทอง|ร่วมบุญใหญ่)/.test(name)) return 'rocket';
+  if (/\b(dragon|rong)\b/.test(name) || /(มังกร|มหาบุญ)/.test(name)) return 'dragon';
+  if (/\b(donut|doughnut)\b/.test(name) || /(โดนัท|ทองคำแท่ง|ลูกท้อ)/.test(name)) return 'donut';
+  if (/\b(rose|hoa hong)\b/.test(name) || /(กุหลาบ|ดอกบัว|เทียน|มินิฮาร์ท)/.test(name)) return 'rose';
   return null;
 }
 

@@ -1,10 +1,10 @@
 import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
 /**
- * Live 9:16 Client Controller — Chánh Điện Đức Phật A Di Đà & Đạo Tràng Phật Tử Quỳ Lễ
- * - Hiển thị 6 Đệm Quỳ VIP (Top 6 Bảng Vàng Công Đức)
- * - Hiển thị 40 Phật Tử mặc áo lam quỳ hai bên thảm đỏ + thẻ tên người xem
- * - Hiệu ứng người xem bước dọc thảm đỏ lên trước Lư Hương Đồng dâng hương
- * - Giọng đọc ZeroTTS (Mai Chi) + Pháp khí Web Audio
+ * Live 9:16 Client Controller — ศาลเจ้าพ่อเห้งเจีย (孙悟空 Sun Wukong) Interactive Sanctuary
+ * - ระบบ Evolution องค์เจ้าพ่อเห้งเจีย 4 ระดับ (LV1.jpg -> LV2.jpg -> LV3.jpg -> LV4.jpg)
+ * - ระบบของขวัญ TikTok 4 ระดับเร่งการอัพระดับองค์เทพ (ยิ่งมูลค่าสูง ยิ่งอัพระดับไว)
+ * - กรอบ UI ซ้าย-ขวาตามต้นฉบับ Ref Interactive UI + ผู้ศรัทธาเดินกราบ 3 จังหวะบนพรมแดง
+ * - ระบบอ่านคำอธิษฐานและใบเซียมซีด้วยโมเดลเสียงพูดภาษาไทย (Thai TTS)
  */
 (function () {
   const params = new URLSearchParams(window.location.search);
@@ -12,7 +12,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     document.body.classList.add('obs-mode');
   }
 
-  // 1. Tự động co giãn khung 1080x1920 vừa khít Stage Wrapper (9:16)
+  // 1. ย่อ/ขยายกรอบ 1080x1920 ให้พอดีกับหน้าจออัตโนมัติ (9:16)
   const stageWrapper = document.getElementById('stageWrapper');
   const stage9x16 = document.getElementById('stage9x16');
 
@@ -25,29 +25,39 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   window.addEventListener('resize', fitStage);
   fitStage();
 
-  // 2. Khởi tạo Particle Engine & Audio Engine (ZeroTTS Mai Chi)
+  // 2. เริ่มต้น Particle Engine (30 FPS) & Thai Audio Engine
   const canvas = document.getElementById('templeCanvas');
   const particles = new window.TempleParticleEngine(canvas);
   const audio = new window.TempleAudioEngine();
 
-  // Gift-specific SFX are routed through the shared audio engine so the
-  // browser's user-gesture unlock and master SFX toggle remain authoritative.
   window.addEventListener('temple:gift-sfx', (event) => {
     dispatchGiftSfx(audio, event.detail?.type, event.detail?.effectId);
   });
+
+  audio.onTtsStateChange = (ttsState) => {
+    const badge = document.getElementById('ttsSpeakingBadge');
+    if (!badge) return;
+    if (ttsState?.speaking) {
+      badge.textContent = '🔊 กำลังอ่านคำอธิษฐาน...';
+      badge.classList.add('speaking');
+    } else {
+      badge.textContent = '🎙️ เสียงไทยพร้อมอ่าน';
+      badge.classList.remove('speaking');
+    }
+  };
 
   function unlockAudioOnce() {
     audio.ensureContext();
     const btnUnlock = document.getElementById('btnUnlockAudio');
     if (btnUnlock) {
-      btnUnlock.textContent = '✅ Âm Thanh Chùa Đã Sẵn Sàng';
+      btnUnlock.textContent = '✅ ระบบเสียงศาลเจ้าและเสียงพูดไทยพร้อมทำงาน';
       btnUnlock.classList.remove('gold');
       btnUnlock.classList.add('active-toggle');
     }
   }
   window.addEventListener('pointerdown', unlockAudioOnce, { once: true });
 
-  // 3. Vẽ các nén nhang đang cháy trong Lư Hương Đỉnh Đồng (x=540, y=895)
+  // 3. วาดก้านธูปและจุดไฟธูปในกระถางธูปมังกรทอง (x=540, y=1075)
   const incenseHolder = document.getElementById('incenseSticksHolder');
   let renderedStickCount = 0;
 
@@ -63,9 +73,9 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       stick.className = 'incense-stick';
 
       const spread = target === 1 ? 0 : (i / (target - 1) - 0.5) * 2;
-      const leftPx = 65 + spread * 28 + Math.sin(i * 2.1) * 2;
+      const leftPx = 65 + spread * 32 + Math.sin(i * 2.1) * 2;
       const angleDeg = spread * 12 + Math.cos(i * 1.5) * 1.5;
-      const heightPx = 76 + (i % 3) * 6;
+      const heightPx = 78 + (i % 3) * 6;
 
       stick.style.left = `${leftPx}px`;
       stick.style.height = `${heightPx}px`;
@@ -79,20 +89,20 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
 
       const rad = (angleDeg * Math.PI) / 180;
       const tipX = 540 + (leftPx - 65) + Math.sin(rad) * heightPx;
-      const tipY = 895 - Math.cos(rad) * heightPx;
+      const tipY = 1075 - Math.cos(rad) * heightPx;
       tips.push({ x: tipX, y: tipY });
     }
     particles.setIncenseTips(tips);
   }
 
-  // 4. Dựng Hàng 6 Đệm Quỳ VIP (Top 6 Thí Chủ trên bục gỗ y=1188)
+  // 4. ตำแหน่งเบาะกราบ VIP ของสายบุญหน้ากระถางธูปมังกรทอง (เหมือนใน Ref Interactive UI)
   const VIP_CUSHION_COORDS = [
-    { x: 140, y: 1188, rank: 1 },
-    { x: 268, y: 1188, rank: 2 },
-    { x: 392, y: 1188, rank: 3 },
-    { x: 688, y: 1188, rank: 4 },
-    { x: 812, y: 1188, rank: 5 },
-    { x: 940, y: 1188, rank: 6 }
+    { x: 325, y: 1455, rank: 1 },
+    { x: 755, y: 1455, rank: 2 },
+    { x: 265, y: 1585, rank: 3 },
+    { x: 815, y: 1585, rank: 4 },
+    { x: 225, y: 1710, rank: 5 },
+    { x: 855, y: 1710, rank: 6 }
   ];
 
   function renderVipCushions(leaderboard = []) {
@@ -103,7 +113,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       const dev = leaderboard[idx];
       if (!dev) return '';
       return `
-        <div class="vip-devotee-slot" style="left: ${slot.x}px; top: ${slot.y}px; z-index: ${12 + idx};">
+        <div class="vip-devotee-slot" style="left: ${slot.x}px; top: ${slot.y}px; z-index: ${13 + idx};">
           <img src="/assets/devotee.png" alt="VIP Devotee" class="devotee-sprite" />
           <div class="vip-rank-pill">
             <span class="vip-rank-num">${slot.rank}</span>
@@ -114,73 +124,39 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     }).join('');
   }
 
-  // 5. Dựng Đạo Tràng 40 Phật Tử Quỳ Lễ Hai Bên Thảm Đỏ (5 Hàng x 4 Cột mỗi bên)
+  // 5. ผู้ศรัทธาที่นั่งรายล้อมเบาะแดงหน้าแท่นประทับ
   const congregationHall = document.getElementById('congregationHall');
-  const HALL_SEAT_COORDS = [];
-
-  (function buildHallGrid() {
-    const rows = 5;
-    const colsPerSide = 4;
-    for (let r = 0; r < rows; r++) {
-      const progress = r / (rows - 1); // 0 (xa) -> 1 (gần)
-      const y = Math.round(1290 + progress * 355); // 1290 -> 1645
-      const scale = +(0.76 + progress * 0.28).toFixed(2);
-
-      // Cánh trái thảm đỏ
-      const leftInnerX = Math.round(335 - progress * 48); // mép thảm mở rộng dần
-      const leftOuterX = 48;
-      for (let c = 0; c < colsPerSide; c++) {
-        const t = c / (colsPerSide - 1);
-        const x = Math.round(leftOuterX + t * (leftInnerX - leftOuterX));
-        HALL_SEAT_COORDS.push({ side: 'L', row: r, col: c, x, y, scale });
-      }
-
-      // Cánh phải thảm đỏ
-      const rightInnerX = Math.round(745 + progress * 48);
-      const rightOuterX = 1032;
-      for (let c = 0; c < colsPerSide; c++) {
-        const t = c / (colsPerSide - 1);
-        const x = Math.round(rightInnerX + t * (rightOuterX - rightInnerX));
-        HALL_SEAT_COORDS.push({ side: 'R', row: r, col: c, x, y, scale });
-      }
-    }
-  })();
+  const HALL_SEAT_COORDS = [
+    { side: 'L', row: 0, x: 375, y: 1520, scale: 0.82 },
+    { side: 'R', row: 0, x: 705, y: 1520, scale: 0.82 },
+    { side: 'L', row: 1, x: 345, y: 1640, scale: 0.90 },
+    { side: 'R', row: 1, x: 735, y: 1640, scale: 0.90 },
+    { side: 'L', row: 2, x: 315, y: 1755, scale: 0.98 },
+    { side: 'R', row: 2, x: 765, y: 1755, scale: 0.98 }
+  ];
 
   let lastRenderedLeaderboardJson = '';
 
   function renderCongregationHall(leaderboard = []) {
     if (!congregationHall) return;
-    // Những người xếp từ hạng 7 trở đi ngồi ở các vị trí đầu tiên cạnh thảm đỏ
-    const hallViewers = leaderboard.slice(6);
+    const hallViewers = leaderboard.slice(6, 12);
     const sig = JSON.stringify(hallViewers.map((d) => `${d.name}:${d.merit}`));
     if (sig === lastRenderedLeaderboardJson && congregationHall.children.length > 0) return;
     lastRenderedLeaderboardJson = sig;
 
-    // Ưu tiên gắn thẻ tên vào các ghế gần thảm đỏ dễ nhìn nhất
-    const labeledSeatIndices = [
-      3, 4, 11, 12, 19, 20, 27, 28, 35, 36, 2, 5, 10, 13, 18, 21, 26, 29
-    ];
-    const seatViewerMap = new Map();
-    hallViewers.forEach((viewer, idx) => {
-      if (idx < labeledSeatIndices.length) {
-        seatViewerMap.set(labeledSeatIndices[idx], viewer);
-      }
-    });
-
     congregationHall.innerHTML = HALL_SEAT_COORDS.map((seat, idx) => {
-      const viewer = seatViewerMap.get(idx);
-      const badgeHtml = viewer
-        ? `
-          <div class="seat-badge">
-            <span class="seat-avatar">${
-              viewer.avatar
-                ? `<img src="${escapeHtml(viewer.avatar)}" alt="" />`
-                : escapeHtml(String(viewer.name || 'P').charAt(0).toUpperCase())
-            }</span>
-            <span class="seat-username">${escapeHtml(shortenName(viewer.name, 11))}</span>
-          </div>
-        `
-        : '';
+      const viewer = hallViewers[idx];
+      if (!viewer) return '';
+      const badgeHtml = `
+        <div class="seat-badge">
+          <span class="seat-avatar">${
+            viewer.avatar
+              ? `<img src="${escapeHtml(viewer.avatar)}" alt="" />`
+              : escapeHtml(String(viewer.name || 'ศ').charAt(0).toUpperCase())
+          }</span>
+          <span class="seat-username">${escapeHtml(shortenName(viewer.name, 11))}</span>
+        </div>
+      `;
 
       return `
         <div
@@ -190,7 +166,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
         >
           <img
             src="/assets/devotee.png"
-            alt="Phật tử"
+            alt="ผู้ศรัทธา"
             class="devotee-sprite"
             style="animation-delay: ${((idx * 0.27) % 3.5).toFixed(2)}s;"
           />
@@ -200,7 +176,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     }).join('');
   }
 
-  // Preload toàn bộ 8 frame nhân vật vào bộ nhớ để chuyển frame mượt 0ms
+  // Preload 8 frame ตัวละครผู้ศรัทธาและภาพองค์เห้งเจียทั้ง 4 ระดับ
   const SPRITE_FRAMES = {
     walk1: '/assets/devotee_walk.png',
     walk2: '/assets/devotee_walk_2.png',
@@ -211,7 +187,13 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     prostrate: '/assets/devotee_prostrate.png',
     prostrateDeep: '/assets/devotee_prostrate_deep.png'
   };
-  Object.values(SPRITE_FRAMES).forEach((url) => {
+  [
+    ...Object.values(SPRITE_FRAMES),
+    '/assets/wukong/LV1.jpg',
+    '/assets/wukong/LV2.jpg',
+    '/assets/wukong/LV3.jpg',
+    '/assets/wukong/LV4.jpg'
+  ].forEach((url) => {
     const img = new Image();
     img.src = url;
   });
@@ -220,7 +202,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     if (!congregationHall) return;
     const seats = congregationHall.querySelectorAll('.hall-seat');
     seats.forEach((el, i) => {
-      if (i % 4 !== 0) return;
       const img = el.querySelector('.devotee-sprite');
       if (!img) return;
       const delay = (i % 4) * 80;
@@ -239,7 +220,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     }
   }
 
-  // Chuyển đổi tức thời giữa 8 khung hình đã giải mã sẵn trên GPU (KHÔNG BAO GIỜ BỊ MẤT HÌNH)
   function setCentralPose(poseKey) {
     const stack = document.getElementById('centralSpriteStack');
     if (!stack) return;
@@ -257,27 +237,25 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     );
   }
 
-  // Chuỗi 8 khung hình Đảnh lễ Tam Bái mượt mà (Hạ gối -> Chắp tay ngực -> Đưa lên trán -> Nghiêng 45° -> Chống tay -> Lạy sát đất -> Ngẩng lên)
   function playThreeBowsSequence(startDelayMs = 0) {
     schedulePose(startDelayMs, 'kneelDown');
     schedulePose(startDelayMs + 160, 'kneel');
 
     const bowOffsets = [startDelayMs + 320, startDelayMs + 1820, startDelayMs + 3320];
     bowOffsets.forEach((t0) => {
-      schedulePose(t0, 'forehead');            // 1. Chắp tay đưa lên trán
-      schedulePose(t0 + 170, 'bowMid');        // 2. Cúi gập lưng 45°
-      schedulePose(t0 + 330, 'prostrate');     // 3. Vươn hai tay chống xuống đệm
-      schedulePose(t0 + 490, 'prostrateDeep'); // 4. Lạy sát đất (Ngũ thể đầu địa)
-      schedulePose(t0 + 860, 'prostrate');     // 5. Bắt đầu nâng đầu lên
-      schedulePose(t0 + 1020, 'bowMid');       // 6. Nâng lưng lên góc 45°
-      schedulePose(t0 + 1180, 'kneel');        // 7. Ngồi quỳ thẳng lưng
+      schedulePose(t0, 'forehead');
+      schedulePose(t0 + 170, 'bowMid');
+      schedulePose(t0 + 330, 'prostrate');
+      schedulePose(t0 + 490, 'prostrateDeep');
+      schedulePose(t0 + 860, 'prostrate');
+      schedulePose(t0 + 1020, 'bowMid');
+      schedulePose(t0 + 1180, 'kneel');
     });
 
     schedulePose(startDelayMs + 4800, 'forehead');
     schedulePose(startDelayMs + 5350, 'kneel');
   }
 
-  // Hiệu ứng thí chủ ĐỨNG ĐI BỘ từng bước dọc thảm đỏ rồi Hạ gối Quỳ Đảnh Lễ (trên cùng 1 nhân vật, không bao giờ mất hình)
   function animateWalkerOnCarpet(user, avatar, actionLabel, wish) {
     const centralEl = document.getElementById('centralWorshipper');
     if (!centralEl) return;
@@ -285,7 +263,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     clearProstrationTimers();
     updateCentralWorshipper(user, avatar, actionLabel, wish, false);
 
-    // Khởi động bước đi từ cuối thảm đỏ lên chính điện
     centralEl.classList.remove('walking-up');
     void centralEl.offsetWidth;
     centralEl.classList.add('walking-up');
@@ -295,7 +272,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       schedulePose(step * 185, step % 2 === 0 ? 'walk1' : 'walk2');
     }
 
-    // Khi bước tới trước Lư Hương (2.05s): dừng bước, hạ gối quỳ xuống đệm và bắt đầu Đảnh lễ 3 lạy
     prostrationTimers.push(
       setTimeout(() => {
         centralEl.classList.remove('walking-up');
@@ -311,9 +287,9 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     const avatarEl = document.getElementById('centralAvatar');
     const beam = document.getElementById('sacredLightBeam');
 
-    if (nameEl) nameEl.textContent = user || 'Thí Chủ Hữu Duyên';
-    if (actEl) actEl.textContent = actionLabel || '✨ Dâng hương cầu an';
-    if (wishEl) wishEl.textContent = `“${wish || 'Nam Mô A Di Đà Phật, cầu bình an cát tường'}”`;
+    if (nameEl) nameEl.textContent = user || 'ผู้ศรัทธา';
+    if (actEl) actEl.textContent = actionLabel || '✨ จุดธูปขอพรองค์เห้งเจีย';
+    if (wishEl) wishEl.textContent = `“${wish || 'ขอองค์เจ้าพ่อเห้งเจียประทานโชคลาภและสิริมงคล'}”`;
 
     if (avatarEl) {
       if (avatar) {
@@ -344,24 +320,117 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       lotusHand.classList.add('flare');
       setTimeout(() => lotusHand.classList.remove('flare'), 3600);
     }
-    particles.spawnBellWave(540, 260, 2);
+    particles.spawnBellWave(540, 490, 2);
 
-    // Cập nhật dòng thông báo dưới thanh HUD
     const hudName = document.getElementById('devoteeNameLine');
     const hudAct = document.getElementById('devoteeActionTag');
-    if (hudName) hudName.textContent = user || 'Thí Chủ';
-    if (hudAct) hudAct.textContent = actionLabel || 'Dâng hương';
+    if (hudName) hudName.textContent = user || 'สายบุญ';
+    if (hudAct) hudAct.textContent = actionLabel || 'กราบสักการะเจ้าพ่อเห้งเจีย';
   }
 
-  // 6. Cập nhật toàn bộ giao diện theo State từ Server
+  // 6. ระบบสลับระดับภาพองค์เจ้าพ่อเห้งเจีย 4 ระดับ (LV.1 -> LV.2 -> LV.3 -> LV.4)
+  let currentDisplayedLevel = 1;
+  let evoBannerTimer = null;
+
+  function applyEvolutionStage(evo, triggerFlash = false) {
+    if (!evo) return;
+    const lvl = Math.max(1, Math.min(4, Number(evo.level) || 1));
+    const levelChanged = lvl !== currentDisplayedLevel;
+    currentDisplayedLevel = lvl;
+
+    if (stage9x16) {
+      stage9x16.setAttribute('data-evo-level', String(lvl));
+    }
+
+    document.querySelectorAll('.evo-stage-img').forEach((img) => {
+      const imgLvl = Number(img.getAttribute('data-level'));
+      img.classList.toggle('active', imgLvl === lvl);
+    });
+
+    if (triggerFlash || levelChanged) {
+      const flash = document.getElementById('evolutionFlashOverlay');
+      if (flash) {
+        flash.classList.add('flash');
+        setTimeout(() => flash.classList.remove('flash'), 650);
+      }
+    }
+
+    const stageLabel = document.getElementById('currentDeityStageLabel');
+    if (stageLabel) {
+      stageLabel.textContent = `LV.${lvl} ${evo.shortName || evo.name} (${evo.chineseTitle || '孙悟空'}) • โบนัสบุญ ×${evo.meritMultiplier || 1}`;
+    }
+
+    const evoFill = document.getElementById('evoProgressFill');
+    const evoLabel = document.getElementById('evoProgressLabel');
+    if (evoFill) {
+      evoFill.style.width = `${Math.max(4, Math.min(100, Number(evo.progressPct) || 0))}%`;
+    }
+    if (evoLabel) {
+      if (evo.isMaxLevel) {
+        evoLabel.textContent = `👑 บรรลุระดับสูงสุด LV.4 โต้วจั้นเซิ่งฝอ (${Number(evo.exp || 0).toLocaleString('th-TH')} EXP • แต้มบุญ ×2.0)`;
+      } else {
+        evoLabel.textContent = `⚡ พลังบารมีอัพระดับ: ${Number(evo.exp || 0).toLocaleString('th-TH')} / ${Number(evo.nextExp || 1000).toLocaleString('th-TH')} EXP (อีก ${Number(evo.expToNext || 0).toLocaleString('th-TH')} EXP สู่ LV.${lvl + 1})`;
+      }
+    }
+
+    document.querySelectorAll('.evo-pill').forEach((pill) => {
+      const t = Number(pill.getAttribute('data-target-level'));
+      pill.classList.toggle('active', t === lvl);
+    });
+
+    [1, 2, 3, 4].forEach((n) => {
+      const btn = document.getElementById(`btnEvoLv${n}`);
+      if (btn) btn.classList.toggle('active-toggle', n === lvl);
+    });
+  }
+
+  function showEvolutionLevelUpBanner(evoUp) {
+    if (!evoUp) return;
+    audio.playEvolutionFanfare();
+    particles.spawnEvolutionBurst(evoUp.toLevel || 2);
+    pulseHallBowing();
+
+    const banner = document.getElementById('evolutionBanner');
+    const titleEl = document.getElementById('evoBannerTitle');
+    const subEl = document.getElementById('evoBannerSub');
+    if (titleEl) titleEl.textContent = `🐒 ${evoUp.name} 🐒`;
+    if (subEl) subEl.textContent = `${evoUp.subtitle} (${evoUp.chineseTitle || ''})`;
+    if (banner) {
+      banner.classList.add('visible');
+      clearTimeout(evoBannerTimer);
+      evoBannerTimer = setTimeout(() => {
+        banner.classList.remove('visible');
+      }, 6500);
+    }
+  }
+
+  // 7. อัปเดตสถานะ UI ทั้งหมดจาก Server State
   let hasInitializedRealLeader = false;
 
   function updateUIState(st) {
     if (!st) return;
 
-    document.getElementById('statIncense').textContent = Number(st.totalIncense || 0).toLocaleString('vi-VN');
-    document.getElementById('statMerit').textContent = Number(st.totalMerit || 0).toLocaleString('vi-VN');
-    document.getElementById('statWoodenFish').textContent = Number(st.woodenFishHits || 0).toLocaleString('vi-VN');
+    const incEl = document.getElementById('statIncense');
+    const merEl = document.getElementById('statMerit');
+    const wfEl = document.getElementById('statWoodenFish');
+    if (incEl) incEl.textContent = Number(st.totalIncense || 0).toLocaleString('th-TH');
+    if (merEl) merEl.textContent = Number(st.totalMerit || 0).toLocaleString('th-TH');
+    if (wfEl) wfEl.textContent = Number(st.woodenFishHits || 0).toLocaleString('th-TH');
+
+    // อัปเดตหลอดศรัทธาวันนี้
+    const faithToday = Number(st.faithToday ?? 477);
+    const faithTarget = Math.max(1, Number(st.faithTarget ?? 1000));
+    const faithPct = Math.min(100, Math.round((faithToday / faithTarget) * 100));
+    const faithFill = document.getElementById('faithProgressFill');
+    const statFaithToday = document.getElementById('statFaithToday');
+    const statFaithTarget = document.getElementById('statFaithTarget');
+    if (faithFill) faithFill.style.width = `${Math.max(5, faithPct)}%`;
+    if (statFaithToday) statFaithToday.textContent = faithToday.toLocaleString('th-TH');
+    if (statFaithTarget) statFaithTarget.textContent = faithTarget.toLocaleString('th-TH');
+
+    if (st.evolution) {
+      applyEvolutionStage(st.evolution, false);
+    }
 
     renderIncenseSticks(st.activeIncenseSticks || 9);
 
@@ -369,60 +438,76 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     renderVipCushions(lb);
     renderCongregationHall(lb);
 
-    // Đồng bộ tên Chủ Lễ mặc định theo người dẫn đầu thực tế nếu chưa có sự kiện mới
     if (!hasInitializedRealLeader && lb.length > 0) {
       hasInitializedRealLeader = true;
       const topDev = lb[0];
       updateCentralWorshipper(
         topDev.name,
         topDev.avatar,
-        `✨ Công đức: ${Number(topDev.merit).toLocaleString('vi-VN')} CĐ`,
-        topDev.lastWish || 'Nam Mô A Di Đà Phật, cầu bình an cát tường',
+        `✨ สายบุญอันดับ 1 • ${Number(topDev.merit).toLocaleString('th-TH')} แต้มบุญ`,
+        topDev.lastWish || 'ขอองค์เจ้าพ่อเห้งเจียประทานพรให้ร่ำรวยโชคลาภ',
         false
       );
     }
 
-    // Cập nhật Bảng TẤM LÒNG THÀNH ở góc dưới phải (Top 4)
+    // อัปเดตกระดาน "สายบุญตัวจริง" ในกรอบซ้าย (ตามแบบ Ref Interactive UI)
     const lbList = document.getElementById('leaderboardList');
     if (lbList) {
+      const medals = ['🥇', '🥈', '🥉', '4'];
       lbList.innerHTML = lb
         .slice(0, 4)
         .map(
-          (item) => `
-          <div class="leader-item">
-            <span class="leader-rank">${item.rank}</span>
-            <span class="leader-name">${escapeHtml(shortenName(item.name, 14))}</span>
-            <span class="leader-merit">${Number(item.merit).toLocaleString('vi-VN')}</span>
+          (item, idx) => `
+          <div class="shrine-lb-row leader-item">
+            <div class="shrine-lb-medal leader-rank">
+              ${
+                item.avatar
+                  ? `<img src="${escapeHtml(item.avatar)}" alt="" />`
+                  : medals[idx] || item.rank
+              }
+            </div>
+            <div class="shrine-lb-info">
+              <div class="shrine-lb-name leader-name">${escapeHtml(shortenName(item.name, 14))}</div>
+              <div class="shrine-lb-score leader-merit">${Number(item.merit).toLocaleString('th-TH')} แต้มบุญ</div>
+            </div>
           </div>
         `
         )
         .join('');
     }
 
-    // Trạng thái kết nối TikTok Live
+    // สถานะเชื่อมต่อห้อง TikTok Live
     const liveDot = document.getElementById('liveDot');
     const liveText = document.getElementById('liveStatusText');
     if (st.tiktok?.connected) {
-      liveDot.classList.add('connected');
-      liveText.textContent = `LIVE @${st.tiktok.username} • ${st.tiktok.viewerCount || 0} mắt`;
+      liveDot?.classList.add('connected');
+      if (liveText) liveText.textContent = `LIVE @${st.tiktok.username} • ผู้ชม ${st.tiktok.viewerCount || 0} คน`;
     } else if (st.tiktok?.connecting) {
-      liveDot.classList.remove('connected');
-      liveText.textContent = `Đang kết nối @${st.tiktok.username}...`;
+      liveDot?.classList.remove('connected');
+      if (liveText) liveText.textContent = `กำลังเชื่อมต่อ @${st.tiktok.username}...`;
     } else {
-      liveDot.classList.remove('connected');
-      liveText.textContent = st.settings?.autoSim
-        ? 'CHÙA LINH ỨNG • TỰ ĐỘNG GIẢ LẬP ĐÔNG NGƯỜI'
-        : 'CHÙA LINH ỨNG • ĐỨC PHẬT A DI ĐÀ';
+      liveDot?.classList.remove('connected');
+      if (liveText) {
+        liveText.textContent = st.settings?.autoSim
+          ? 'โหมดจำลองผู้ชมและของขวัญอัตโนมัติ'
+          : 'ศาลเจ้าพ่อเห้งเจีย • พร้อมรับคำอธิษฐาน';
+      }
     }
 
     const btnAutoSim = document.getElementById('btnToggleAutoSim');
     if (btnAutoSim && st.settings) {
       btnAutoSim.textContent = st.settings.autoSim
-        ? '🤖 Tự động Giả lập Người Xem: ĐANG BẬT'
-        : '🤖 Tự động Giả lập Người Xem: TẮT';
+        ? '🤖 จำลองผู้ชมส่งของขวัญอัตโนมัติ: เปิดอยู่'
+        : '🤖 จำลองผู้ชมส่งของขวัญอัตโนมัติ: ปิด';
       btnAutoSim.classList.toggle('active-toggle', Boolean(st.settings.autoSim));
     }
+
     if (st.settings) {
+      if (st.settings.ttsVoice) {
+        audio.setTtsVoice(st.settings.ttsVoice);
+        const selVoice = document.getElementById('selectTtsVoice');
+        if (selVoice) selVoice.value = st.settings.ttsVoice;
+      }
       if (typeof st.settings.musicVolume === 'number') {
         audio.setMusicVolume(st.settings.musicVolume);
         const sMus = document.getElementById('sliderMusicVol');
@@ -441,7 +526,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       }
     }
 
-
     const feed = document.getElementById('eventFeed');
     if (feed && Array.isArray(st.recentEvents)) {
       feed.innerHTML = st.recentEvents
@@ -454,43 +538,44 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   function formatEventSummary(ev) {
     switch (ev.type) {
       case 'burnIncense':
-        return `🔥 <strong>${escapeHtml(ev.user)}</strong> dâng ${ev.count} nén nhang (+${ev.merit} CĐ)`;
+        return `🔥 <strong>${escapeHtml(ev.user)}</strong> จุดธูปไหว้ ${ev.count} ดอก (+${ev.merit} แต้มบุญ • +${ev.expGain || 9} EXP)`;
       case 'strikeWoodenFish':
-        return `🪵 <strong>${escapeHtml(ev.user)}</strong> gõ mõ ${ev.count} nhịp (+${ev.merit} CĐ)`;
+        return `🪵 <strong>${escapeHtml(ev.user)}</strong> กดหัวใจ/เคาะปักฮื้อ (+${ev.merit} แต้มบุญ)`;
       case 'ringBell':
-        return `🔔 <strong>${escapeHtml(ev.user)}</strong> thỉnh Đại Hồng Chung (+${ev.merit} CĐ)`;
+        return `🔔 <strong>${escapeHtml(ev.user)}</strong> ตีระฆังทองคำ (+${ev.merit} แต้มบุญ)`;
       case 'sendPrayer':
-        return `🏮 <strong>${escapeHtml(ev.user)}</strong> cầu phúc: “${escapeHtml(ev.wish)}”`;
+        return `🏮 <strong>${escapeHtml(ev.user)}</strong> อธิษฐาน: “${escapeHtml(ev.wish)}”`;
       case 'offerGift':
       case 'grandCeremony':
-        return `🪷 <strong>${escapeHtml(ev.user)}</strong> dâng <em>${escapeHtml(ev.giftName)}</em> (+${ev.merit} CĐ)`;
+        return `🎁 <strong>${escapeHtml(ev.user)}</strong> ส่ง <em>${escapeHtml(ev.giftName)}</em> (+${ev.expGain || 0} EXP • +${ev.merit} แต้มบุญ)`;
       case 'drawFortune':
-        return `🎋 <strong>${escapeHtml(ev.user)}</strong> gieo được Quẻ số ${ev.fortune?.number} (${ev.fortune?.rank})`;
+        return `🎋 <strong>${escapeHtml(ev.user)}</strong> ได้เซียมซีใบที่ ${ev.fortune?.number} (${ev.fortune?.rank})`;
+      case 'evolutionChange':
+        return `⚡ <strong>องค์เจ้าพ่อเห้งเจีย</strong> อัพระดับสู่ <em>${escapeHtml(ev.evolutionUp?.name || '')}</em>`;
       default:
-        return `✨ <strong>${escapeHtml(ev.user || 'Thí chủ')}</strong> tương tác`;
+        return `✨ <strong>${escapeHtml(ev.user || 'สายบุญ')}</strong> ร่วมสักการะ`;
     }
   }
 
-  // 7. Xử lý hiệu ứng khi có Nghi Thức mới
-
+  // 8. การแสดงผลพิธีกรรม เซียมซี และเอฟเฟกต์ของขวัญ
   function playFortuneSequence(ev) {
     audio.playFortuneShake();
     updateCentralWorshipper(
       ev.user,
       ev.avatar,
-      '🎋 Đang xin xăm...',
-      `Thí chủ ${ev.user} đang thành tâm xin quẻ...`,
+      '🎋 กำลังเขย่ากระบอกเซียมซี...',
+      `คุณ ${ev.user} กำลังตั้งจิตอธิษฐานเสี่ยงเซียมซีเจ้าพ่อเห้งเจีย...`,
       false
     );
     audio.enqueueTts(ev.ttsText || '', {
-      voice: ev.ttsVoice || 'maichi',
+      voice: ev.ttsVoice || audio.ttsVoice || 'thai_female',
       onStart: () => {
         audio.playIncenseChime();
         showFortuneModal(ev.user, ev.fortune);
         updateCentralWorshipper(
           ev.user,
           ev.avatar,
-          `🎋 Quẻ số ${ev.fortune?.number} (${ev.fortune?.rank})`,
+          `🎋 เซียมซีใบที่ ${ev.fortune?.number} (${ev.fortune?.rank})`,
           ev.fortune?.meaning || '',
           true
         );
@@ -499,7 +584,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
         clearTimeout(fortuneTimer);
         fortuneTimer = setTimeout(() => {
           document.getElementById('fortuneModal')?.classList.remove('visible');
-        }, 1800);
+        }, 2200);
       }
     });
   }
@@ -509,27 +594,38 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
 
   function triggerRitualVisuals(ev) {
     if (!ev) return;
-    const giftActionResult = window.TempleGiftActionEngine?.handle(ev) || { allowWalker: ['burnIncense', 'sendPrayer', 'offerGift', 'grandCeremony', 'ringBell', 'drawFortune'].includes(ev.type), interruptsRitual: false };
-    // Keep optional 3D effects in sync with the 2D combo coalescer. Each streak
-    // still updates server rewards/merit, but repeated frames do not replay 3D VFX.
-    if (!giftActionResult.coalescedCombo) {
-      window.dispatchEvent(new CustomEvent("temple:ritual", { detail: ev }));
+
+    if (ev.evolutionUp) {
+      showEvolutionLevelUpBanner(ev.evolutionUp);
     }
-    // The character-interrupted event already cancels ritual pose timers and
-    // establishes the neutral kneeling pose. Do not overwrite it here: gift
-    // choreography now owns the central sprite until the effect cooldown ends.
+
+    if (ev.type === 'evolutionChange') {
+      if (ev.ttsText) {
+        audio.enqueueTts(ev.ttsText, { voice: ev.ttsVoice || audio.ttsVoice || 'thai_female' });
+      }
+      return;
+    }
+
+    const giftActionResult = window.TempleGiftActionEngine?.handle(ev) || {
+      allowWalker: ['burnIncense', 'sendPrayer', 'offerGift', 'grandCeremony', 'ringBell', 'drawFortune'].includes(ev.type),
+      interruptsRitual: false
+    };
+
+    if (!giftActionResult.coalescedCombo) {
+      window.dispatchEvent(new CustomEvent('temple:ritual', { detail: ev }));
+    }
 
     if (ev.ttsText && ev.type !== 'drawFortune' && !giftActionResult.coalescedCombo) {
-      audio.enqueueTts(ev.ttsText, { voice: ev.ttsVoice || 'maichi' });
+      audio.enqueueTts(ev.ttsText, { voice: ev.ttsVoice || audio.ttsVoice || 'thai_female' });
     }
 
     switch (ev.type) {
       case 'burnIncense': {
         audio.playIncenseChime();
-        particles.spawnIncenseBurst(540, 895);
-        particles.spawnFloatingMerit(`+${ev.merit} Công Đức`, 540, 860, '#ffe082');
+        particles.spawnIncenseBurst(540, 1065);
+        particles.spawnFloatingMerit(`+${ev.merit} แต้มบุญ`, 540, 1020, '#ffe082');
         if (giftActionResult.allowWalker) {
-          animateWalkerOnCarpet(ev.user, ev.avatar, `🔥 Dâng ${ev.count} nén hương (+${ev.merit} CĐ)`, ev.wish);
+          animateWalkerOnCarpet(ev.user, ev.avatar, `🔥 จุดธูปไหว้ ${ev.count} ดอก (+${ev.merit} แต้มบุญ)`, ev.wish);
         }
         break;
       }
@@ -537,17 +633,18 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       case 'strikeWoodenFish': {
         audio.playWoodenFish();
         pulseHallBowing();
-        particles.spawnFloatingMerit(`+${ev.merit} Công Đức`, 890, 935, '#ffd54f');
+        particles.spawnIncenseBurst(540, 1065);
+        particles.spawnFloatingMerit(`+${ev.merit} แต้มบุญ`, 540, 1030, '#ffd54f');
         break;
       }
 
       case 'ringBell': {
         audio.playTempleBell(1.0);
         pulseHallBowing();
-        particles.spawnBellWave(540, 510, 4);
-        particles.spawnFloatingMerit(`+${ev.merit} Công Đức`, 190, 935, '#fff3b0');
+        particles.spawnBellWave(540, 490, 4);
+        particles.spawnFloatingMerit(`+${ev.merit} แต้มบุญ`, 540, 1000, '#fff3b0');
         if (giftActionResult.allowWalker) {
-          updateCentralWorshipper(ev.user, ev.avatar, `🔔 Thỉnh Đại Hồng Chung (+${ev.merit} CĐ)`, ev.wish);
+          updateCentralWorshipper(ev.user, ev.avatar, `🔔 ตีระฆังทองคำ (+${ev.merit} แต้มบุญ)`, ev.wish);
         }
         break;
       }
@@ -555,9 +652,9 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       case 'sendPrayer': {
         audio.playIncenseChime();
         spawnSkyLantern(ev.user, ev.wish);
-        particles.spawnFloatingMerit(`+${ev.merit} Công Đức`, 540, 920, '#ffb74d');
+        particles.spawnFloatingMerit(`+${ev.merit} แต้มบุญ`, 540, 1010, '#ffb74d');
         if (giftActionResult.allowWalker) {
-          animateWalkerOnCarpet(ev.user, ev.avatar, `🏮 Cầu phúc (+${ev.merit} CĐ)`, ev.wish);
+          animateWalkerOnCarpet(ev.user, ev.avatar, `🏮 ปล่อยโคมขอพร (+${ev.merit} แต้มบุญ)`, ev.wish);
         }
         break;
       }
@@ -568,29 +665,28 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
             audio.playIncenseChime();
             audio.playTempleBell(0.85);
           }
-          particles.spawnIncenseBurst(540, 895);
+          particles.spawnIncenseBurst(540, 1065);
         }
-        particles.spawnFloatingMerit(`+${ev.merit} Công Đức`, 540, 840, '#fff3b0');
+        particles.spawnFloatingMerit(`+${ev.expGain || 15} EXP • +${ev.merit} บุญ`, 540, 980, '#fff3b0');
         if (giftActionResult.allowWalker) {
-          animateWalkerOnCarpet(ev.user, ev.avatar, `🪷 Dâng ${ev.giftName} (+${ev.merit} CĐ)`, ev.wish);
+          animateWalkerOnCarpet(ev.user, ev.avatar, `🎁 ถวาย ${ev.giftName} (+${ev.expGain || 15} EXP)`, ev.wish);
         }
         break;
       }
 
       case 'grandCeremony': {
         if (!giftActionResult.coalescedCombo) {
-          // Special gift actions own their sound design; keep the generic
-          // double-bell cue only for ceremonies without a mapped gift action.
           if (!giftActionResult.action) {
             audio.playTempleBell(1.2);
             setTimeout(() => audio.playTempleBell(1.1), 900);
           }
           particles.spawnGrandCeremonyRain();
           pulseHallBowing();
-          showGrandCeremonyBanner(ev.user, ev.giftName, ev.merit);
+          showGrandCeremonyBanner(ev.user, ev.giftName, ev.merit, ev.expGain);
         }
+        particles.spawnFloatingMerit(`+${ev.expGain || 5000} EXP!`, 540, 940, '#ffeb3b');
         if (giftActionResult.allowWalker) {
-          animateWalkerOnCarpet(ev.user, ev.avatar, `🐉 ${ev.giftName} (+${ev.merit} CĐ)`, ev.wish);
+          animateWalkerOnCarpet(ev.user, ev.avatar, `🐉 ${ev.giftName} (+${ev.expGain || 5000} EXP)`, ev.wish);
         }
         break;
       }
@@ -602,10 +698,6 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     }
   }
 
-
-  // A gift interruption takes ownership of the central sprite immediately.
-  // Cancel the previous devotee's scheduled bow frames so stale timers cannot
-  // change the pose underneath Rocket/Dragon/Donut/Rose choreography.
   window.addEventListener('temple:character-interrupted', () => {
     clearProstrationTimers();
     const centralEl = document.getElementById('centralWorshipper');
@@ -613,13 +705,11 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     setCentralPose('kneel');
   });
 
-  // Queued devotees take ownership of the same central character after the
-  // current bow sequence or gift interruption cooldown finishes.
   window.addEventListener('temple:character-start', (event) => {
     const ev = event.detail;
     if (!ev) return;
     if (ev.type === 'ringBell') {
-      updateCentralWorshipper(ev.user, ev.avatar, `🔔 Thỉnh Đại Hồng Chung (+${ev.merit} CĐ)`, ev.wish);
+      updateCentralWorshipper(ev.user, ev.avatar, `🔔 ตีระฆังทองคำ (+${ev.merit} แต้มบุญ)`, ev.wish);
       return;
     }
     if (ev.type === 'drawFortune') {
@@ -627,12 +717,12 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       return;
     }
     const labels = {
-      burnIncense: `🔥 Dâng ${ev.count} nén hương (+${ev.merit} CĐ)`,
-      sendPrayer: `🏮 Cầu phúc (+${ev.merit} CĐ)`,
-      offerGift: `🪷 Dâng ${ev.giftName} (+${ev.merit} CĐ)`,
-      grandCeremony: `🐉 ${ev.giftName} (+${ev.merit} CĐ)`
+      burnIncense: `🔥 จุดธูปไหว้ ${ev.count} ดอก (+${ev.merit} แต้มบุญ)`,
+      sendPrayer: `🏮 ปล่อยโคมขอพร (+${ev.merit} แต้มบุญ)`,
+      offerGift: `🎁 ถวาย ${ev.giftName} (+${ev.expGain || 15} EXP)`,
+      grandCeremony: `🐉 ${ev.giftName} (+${ev.expGain || 5000} EXP)`
     };
-    animateWalkerOnCarpet(ev.user, ev.avatar, labels[ev.type] || '✨ Tham gia nghi lễ', ev.wish);
+    animateWalkerOnCarpet(ev.user, ev.avatar, labels[ev.type] || '✨ ร่วมพิธีสักการะ', ev.wish);
   });
 
   function spawnSkyLantern(user, wish) {
@@ -640,7 +730,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     if (!layer) return;
     const lantern = document.createElement('div');
     lantern.className = 'sky-lantern';
-    const leftPos = 80 + Math.floor(Math.random() * 640);
+    const leftPos = 290 + Math.floor(Math.random() * 260);
     lantern.style.left = `${leftPos}px`;
     lantern.innerHTML = `
       <div class="sky-lantern-user">🙏 ${escapeHtml(user)}</div>
@@ -655,11 +745,11 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   function showFortuneModal(user, fortune) {
     if (!fortune) return;
     const modal = document.getElementById('fortuneModal');
-    document.getElementById('fortuneRankBadge').textContent = fortune.rank.toUpperCase();
-    document.getElementById('fortuneTitle').textContent = `Quẻ Số ${fortune.number} — ${fortune.title}`;
-    document.getElementById('fortuneDevotee').textContent = `Thí chủ cầu quẻ: ${user}`;
+    document.getElementById('fortuneRankBadge').textContent = fortune.rank;
+    document.getElementById('fortuneTitle').textContent = `เซียมซีใบที่ ${fortune.number} — ${fortune.title}`;
+    document.getElementById('fortuneDevotee').textContent = `ผู้เสี่ยงเซียมซี: คุณ ${user}`;
     document.getElementById('fortunePoem').textContent = fortune.poem;
-    document.getElementById('fortuneMeaning').textContent = `Lời bàn: ${fortune.meaning}`;
+    document.getElementById('fortuneMeaning').textContent = `คำทำนาย: ${fortune.meaning}`;
 
     modal.classList.add('visible');
     clearTimeout(fortuneTimer);
@@ -672,10 +762,10 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     document.getElementById('fortuneModal').classList.remove('visible');
   });
 
-  function showGrandCeremonyBanner(user, giftName, merit) {
+  function showGrandCeremonyBanner(user, giftName, merit, expGain) {
     const banner = document.getElementById('grandCeremonyBanner');
-    document.getElementById('grandTitle').textContent = `🐉 ${giftName.toUpperCase()} 🐉`;
-    document.getElementById('grandSub').textContent = `Đại Thí Chủ ${user} • Công Đức Vô Lượng (+${merit} CĐ)`;
+    document.getElementById('grandTitle').textContent = `🐉 ${giftName} 🐉`;
+    document.getElementById('grandSub').textContent = `สายบุญใหญ่ คุณ ${user} • พลังบารมี +${Number(expGain || 0).toLocaleString('th-TH')} EXP (+${Number(merit || 0).toLocaleString('th-TH')} แต้มบุญ)`;
     banner.classList.add('visible');
     clearTimeout(grandTimer);
     grandTimer = setTimeout(() => {
@@ -683,7 +773,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     }, 6800);
   }
 
-  // 8. Kết nối JSON-RPC 2.0 WebSocket & Gửi Lệnh RPC
+  // 9. เชื่อมต่อ WebSocket JSON-RPC 2.0
   let ws = null;
   let rpcId = 1;
   let lastTikTokConnected = null;
@@ -709,8 +799,8 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
           if (msg.params?.event) triggerRitualVisuals(msg.params.event);
         } else if (msg.method === 'tts.play') {
           if (msg.params?.url) {
-            audio.enqueueTts(msg.params.text || 'Nam mô A Di Đà Phật', {
-              voice: msg.params.voice || 'maichi',
+            audio.enqueueTts(msg.params.text || 'สาธุ', {
+              voice: msg.params.voice || 'thai_female',
               url: msg.params.url
             });
           }
@@ -748,14 +838,108 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   }
 
   function getFormInput() {
-    const user = document.getElementById('inputDevoteeName')?.value.trim() || 'Quỳnh_Finn';
+    const user = document.getElementById('inputDevoteeName')?.value.trim() || 'คุณเบิร์ด สายบุญ';
     const wish =
       document.getElementById('inputDevoteeWish')?.value.trim() ||
-      'Cầu cho gia đình bình an, tài lộc hanh thông';
+      'ขอองค์เจ้าพ่อเห้งเจียประทานโชคลาภ ค้าขายร่ำรวย สมปรารถนาทุกประการ';
     return { user, wish };
   }
 
-  // Gắn sự kiện tương tác trực tiếp trên màn hình 9:16 & Thanh HUD dưới đáy
+  // ปุ่มเปลี่ยนระดับ Evolution 4 ปาง (ทั้งบนหน้าจอ 9:16 และในแผงควบคุมด้านข้าง)
+  document.querySelectorAll('[data-target-level], [data-set-level]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const level = Number(btn.getAttribute('data-target-level') || btn.getAttribute('data-set-level') || 1);
+      const { user } = getFormInput();
+      callRpc('temple.setEvolutionLevel', { level, user });
+    });
+  });
+
+  // กรอบซ้าย: พิมพ์ในแชท (คลิกเพื่อจำลองได้ทันที)
+  document.getElementById('cardChatWalk')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.burnIncense', { user, count: 3, wish });
+  });
+
+  document.getElementById('cardChatFortune')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.drawFortune', { user, topic: wish });
+  });
+
+  document.getElementById('cardChatLike')?.addEventListener('click', () => {
+    const { user } = getFormInput();
+    callRpc('temple.strikeWoodenFish', { user, count: 9 });
+  });
+
+  // กรอบขวา: ส่งของขวัญ 6 รายการ (ครอบคลุม 4 ระดับการ Donate อัพระดับองค์เทพ)
+  document.getElementById('giftItemLotus')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'lotus',
+      coins: 1,
+      giftName: 'ดอกบัวถวายองค์เทพ',
+      wish
+    });
+  });
+
+  document.getElementById('giftItemCandle')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'lamp',
+      coins: 5,
+      giftName: 'รูปเทียนจุดบูชา',
+      wish
+    });
+  });
+
+  document.getElementById('giftItemFortune')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'lamp',
+      coins: 20,
+      giftName: 'เซียมซีส่วนตัว',
+      wish
+    });
+    setTimeout(() => {
+      callRpc('temple.drawFortune', { user, topic: wish });
+    }, 900);
+  });
+
+  document.getElementById('giftItemGoldBar')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'fruit',
+      coins: 30,
+      giftName: 'ทองคำแท่งและลูกท้อสวรรค์',
+      wish
+    });
+  });
+
+  document.getElementById('giftItemGrandMerit')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'dragon',
+      coins: 100,
+      giftName: 'ร่วมบุญใหญ่ กระบองทองค้ำฟ้า',
+      wish
+    });
+  });
+
+  document.getElementById('giftItemMegaDragon')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.grandCeremony', {
+      user,
+      coins: 500,
+      giftName: 'มหาบุญมังกรทอง ฉลองทั้งไลฟ์',
+      wish
+    });
+  });
+
+  // จุดคลิกบนแท่นพิธีและแถบล่าง
   document.getElementById('incenseBurnerZone')?.addEventListener('click', () => {
     const { user, wish } = getFormInput();
     callRpc('temple.burnIncense', { user, count: 3, wish });
@@ -776,15 +960,20 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     callRpc('temple.offerGift', {
       user,
       giftType: 'lotus',
-      coins: 20,
-      giftName: 'Đài Hoa Sen Vàng',
+      coins: 10,
+      giftName: 'ดอกบัวทองคำ',
       wish
     });
   });
 
+  document.getElementById('cardFortuneBtn')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.drawFortune', { user, topic: wish });
+  });
+
   document.getElementById('woodenFishStation')?.addEventListener('click', () => {
     const { user } = getFormInput();
-    callRpc('temple.strikeWoodenFish', { user, count: 1 });
+    callRpc('temple.strikeWoodenFish', { user, count: 3 });
   });
 
   document.getElementById('bellStation')?.addEventListener('click', () => {
@@ -797,25 +986,10 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     callRpc('temple.drawFortune', { user, topic: wish });
   });
 
-  // Các nút trên Quick RPC Dock bên phải
+  // ปุ่มใน Quick Dock ด้านขวา
   document.getElementById('btnRpcIncense')?.addEventListener('click', () => {
     const { user, wish } = getFormInput();
     callRpc('temple.burnIncense', { user, count: 3, wish });
-  });
-
-  document.getElementById('btnRpcLantern')?.addEventListener('click', () => {
-    const { user, wish } = getFormInput();
-    callRpc('temple.sendPrayer', { user, wish });
-  });
-
-  document.getElementById('btnRpcWoodenFish')?.addEventListener('click', () => {
-    const { user } = getFormInput();
-    callRpc('temple.strikeWoodenFish', { user, count: 5 });
-  });
-
-  document.getElementById('btnRpcBell')?.addEventListener('click', () => {
-    const { user, wish } = getFormInput();
-    callRpc('temple.ringBell', { user, count: 1, wish, readTts: true });
   });
 
   document.getElementById('btnRpcFortune')?.addEventListener('click', () => {
@@ -828,8 +1002,41 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     callRpc('temple.offerGift', {
       user,
       giftType: 'lotus',
-      coins: 20,
-      giftName: 'Đài Hoa Sen Vàng',
+      coins: 1,
+      giftName: 'ดอกบัวถวายองค์เทพ',
+      wish
+    });
+  });
+
+  document.getElementById('btnRpcGiftCandle')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'lamp',
+      coins: 5,
+      giftName: 'รูปเทียนจุดบูชา',
+      wish
+    });
+  });
+
+  document.getElementById('btnRpcGiftGold')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'fruit',
+      coins: 30,
+      giftName: 'ทองคำแท่งและลูกท้อสวรรค์',
+      wish
+    });
+  });
+
+  document.getElementById('btnRpcGiftRocket')?.addEventListener('click', () => {
+    const { user, wish } = getFormInput();
+    callRpc('temple.offerGift', {
+      user,
+      giftType: 'dragon',
+      coins: 100,
+      giftName: 'ร่วมบุญใหญ่ กระบองทองค้ำฟ้า',
       wish
     });
   });
@@ -838,10 +1045,20 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
     const { user, wish } = getFormInput();
     callRpc('temple.grandCeremony', {
       user,
-      coins: 299,
-      giftName: 'Đại Lễ Kim Long Chầu Phật',
+      coins: 500,
+      giftName: 'มหาบุญมังกรทอง ฉลองทั้งไลฟ์',
       wish
     });
+  });
+
+  document.getElementById('btnResetMerit')?.addEventListener('click', () => {
+    callRpc('temple.resetMerit', {});
+  });
+
+  document.getElementById('selectTtsVoice')?.addEventListener('change', (e) => {
+    const voice = e.target.value;
+    audio.setTtsVoice(voice);
+    callRpc('temple.updateSettings', { ttsVoice: voice });
   });
 
   document.getElementById('btnConnectTikTok')?.addEventListener('click', () => {
@@ -859,14 +1076,14 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
   document.getElementById('btnToggleTts')?.addEventListener('click', (e) => {
     audio.ttsEnabled = !audio.ttsEnabled;
     const btn = e.currentTarget;
-    btn.textContent = `🎙️ Giọng Đọc: ${audio.ttsEnabled ? 'BẬT' : 'TẮT'}`;
+    btn.textContent = `🎙️ เสียงพูดไทย: ${audio.ttsEnabled ? 'เปิด' : 'ปิด'}`;
     btn.classList.toggle('active-toggle', audio.ttsEnabled);
   });
 
   document.getElementById('btnToggleSfx')?.addEventListener('click', (e) => {
     audio.setSfxEnabled(!audio.sfxEnabled);
     const btn = e.currentTarget;
-    btn.textContent = `✨ Hiệu Ứng: ${audio.sfxEnabled ? 'BẬT' : 'TẮT'}`;
+    btn.textContent = `✨ เอฟเฟกต์เสียง: ${audio.sfxEnabled ? 'เปิด' : 'ปิด'}`;
     btn.classList.toggle('active-toggle', audio.sfxEnabled);
   });
 
@@ -878,11 +1095,10 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
       audio.stopZenAmbience();
     }
     const btn = e.currentTarget;
-    btn.textContent = `🎵 Nhạc Nền: ${audio.bgMusicEnabled ? 'BẬT' : 'TẮT'}`;
+    btn.textContent = `🎵 เพลงบรรเลง: ${audio.bgMusicEnabled ? 'เปิด' : 'ปิด'}`;
     btn.classList.toggle('active-toggle', audio.bgMusicEnabled);
   });
 
-  // Khởi tạo và gắn sự kiện thanh trượt chỉnh âm lượng Nhạc nền & Giọng đọc
   const sliderMusicVol = document.getElementById('sliderMusicVol');
   const valMusicVol = document.getElementById('valMusicVol');
   if (sliderMusicVol && valMusicVol) {
@@ -920,7 +1136,7 @@ import { dispatchGiftSfx } from './gift-sfx-dispatcher.js';
 
   const btnToggleSfx = document.getElementById('btnToggleSfx');
   if (btnToggleSfx) {
-    btnToggleSfx.textContent = `✨ Hiệu Ứng: ${audio.sfxEnabled ? 'BẬT' : 'TẮT'}`;
+    btnToggleSfx.textContent = `✨ เอฟเฟกต์เสียง: ${audio.sfxEnabled ? 'เปิด' : 'ปิด'}`;
     btnToggleSfx.classList.toggle('active-toggle', audio.sfxEnabled);
   }
 

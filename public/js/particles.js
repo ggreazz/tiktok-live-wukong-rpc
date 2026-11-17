@@ -201,6 +201,25 @@ class TempleParticleEngine {
     }
   }
 
+  spawnEvolutionBurst(level = 2) {
+    this.spawnGrandCeremonyRain();
+    this.spawnBellWave(540, 620, 4);
+    for (let i = 0; i < 48; i++) {
+      const angle = (Math.PI * 2 * i) / 48;
+      const speed = 4.0 + Math.random() * 9.0;
+      this.burstParticles.push({
+        x: 540,
+        y: 620,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 3.5 + Math.random() * 4.0,
+        alpha: 1,
+        decay: 0.018 + Math.random() * 0.014,
+        color: level >= 3 ? (i % 2 === 0 ? '#ffeb3b' : '#ff3d00') : '#ffd54f'
+      });
+    }
+  }
+
   animate(timestamp) {
     requestAnimationFrame(this.animate);
 
@@ -311,9 +330,9 @@ class TempleParticleEngine {
       ctx.fill();
     }
 
-    // 6. Chữ +Công Đức bay lên (dùng strokeText thay vì shadowBlur tốn CPU)
+    // 6. ข้อความแต้มบุญและแต้มบารมีลอยขึ้น (ใช้ strokeText ประหยัด CPU)
     if (this.floatingTexts.length > 0) {
-      ctx.font = '800 27px "Be Vietnam Pro", sans-serif';
+      ctx.font = '800 26px "Prompt", "Noto Sans Thai", sans-serif';
       ctx.textAlign = 'center';
       ctx.lineWidth = 4;
       ctx.strokeStyle = 'rgba(15, 4, 2, 0.9)';
