@@ -26,6 +26,13 @@ os.environ.setdefault("MKL_NUM_THREADS", "3")
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "3")
 os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "3")
 
+for stream in (sys.stdin, sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
 import numpy as np
 import soundfile as sf
 

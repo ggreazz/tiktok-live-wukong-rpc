@@ -299,9 +299,15 @@ class ZeroTTSManager {
   }
 
   resolvePythonBin() {
-    const venvPy = path.join(__dirname, '.venv', 'bin', 'python');
-    if (fs.existsSync(venvPy)) return venvPy;
-    return 'python3';
+    const candidates = [
+      path.join(__dirname, '.venv', 'Scripts', 'python.exe'),
+      path.join(__dirname, '.venv', 'bin', 'python'),
+      path.join(__dirname, '.venv', 'bin', 'python3')
+    ];
+    for (const candidate of candidates) {
+      if (fs.existsSync(candidate)) return candidate;
+    }
+    return process.platform === 'win32' ? 'python' : 'python3';
   }
 
   startWorker() {
@@ -312,6 +318,7 @@ class ZeroTTSManager {
     this.status = 'loading';
     this.proc = spawn(pyBin, [scriptPath], {
       cwd: __dirname,
+      env: { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1' },
       stdio: ['pipe', 'pipe', 'pipe']
     });
 
