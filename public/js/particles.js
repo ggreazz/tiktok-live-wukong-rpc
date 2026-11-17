@@ -1,10 +1,9 @@
 /**
  * Ultra-Low-CPU 2.5D Sacred Temple Canvas Particle Engine
- * Tối ưu hóa tối đa cho OBS / TikTok Live treo máy 24/7:
- * - Giới hạn đúng 30 FPS (tiết kiệm 50–75% CPU/GPU so với 60/120Hz)
- * - Tự động tạm dừng khi tab ẩn (document.hidden)
- * - Pre-render toàn bộ Khói hương, Hạt vàng, Cánh hoa sen ra Offscreen Canvas 1 lần duy nhất
- *   (KHÔNG gọi createRadialGradient, bezierCurveTo hay shadowBlur trong vòng lặp frame!)
+ * ปรับแต่งให้ประหยัด CPU/GPU สูงสุดสำหรับเปิดไลฟ์ TikTok / OBS 24 ชั่วโมง:
+ * - ล็อกความเร็ว 30 FPS เพื่อลดภาระเครื่อง 50–75%
+ * - หยุดวาดอัตโนมัติเมื่อซ่อนแท็บ (document.hidden)
+ * - Pre-render ควันธูป ละอองทอง และกลีบดอกบัวลง Offscreen Canvas ล่วงหน้าครั้งเดียว
  */
 class TempleParticleEngine {
   constructor(canvas) {

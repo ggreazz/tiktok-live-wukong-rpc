@@ -9,14 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Charm:wght@700&family=Noto+Sans+Thai:wght@400;600;700;800;900&family=Noto+Serif+TC:wght@700;900&family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-      }
-    }
-  </script>
   <link rel="stylesheet" href="/css/live.css?v=wukong-fix-20261117-2" />
   <style>
     /* Critical inline fallback: รับประกันว่ารูปพื้นหลังเจ้าพ่อเห้งเจีย LV1-LV4 แสดงผล 100% แม้ติด Browser Cache */
@@ -336,13 +328,11 @@
         <div class="carpet-walker-layer" id="carpetWalkerLayer"></div>
         <div class="sky-lanterns-layer" id="skyLanternsLayer"></div>
 
-        <!-- 10. Canvas 3D สำรอง และ Canvas เอฟเฟกต์ควันธูป/ดอกบัวทอง 30 FPS -->
-        <canvas id="temple3dCanvas" hidden aria-hidden="true"></canvas>
+        <!-- 10. Canvas เอฟเฟกต์ควันธูป/ดอกบัวทอง 30 FPS -->
         <canvas id="templeCanvas"></canvas>
 
         <!-- 11. แถบแจ้งเตือนผู้กำลังสักการะและปุ่มลัดด้านล่างพรมแดง -->
         <footer class="bottom-hud-bar">
-          <div class="hud-panel-kicker" hidden aria-hidden="true">พิธีกรรมสักการะ • ถวายของขวัญ (NGHI LỄ • CÚNG DƯỜNG)</div>
           <div class="hud-active-notice" id="hudActiveNotice">
             <span class="flower-bullet">🐒</span>
             <strong id="devoteeNameLine">เบิร์ด สายบุญ</strong>
@@ -515,8 +505,6 @@
   <script src="/js/audio.js?v=wukong-bgmusic-20261117"></script>
   <script src="/js/particles.js?v=wukong-fix-canvas-20261117"></script>
   <script type="module" src="/js/live.js?v=wukong-fix-20261117-2"></script>
-  <script type="module" src="/js/temple-3d.js?v=wukong-fix-20261117-2"></script>
-  <script type="module" src="/js/camera-controller.js?v=wukong-fix-20261117-2"></script>
   <script type="module" src="/js/gift-action-engine.js?v=wukong-fix-20261117-2"></script>
 </body>
 </html>
